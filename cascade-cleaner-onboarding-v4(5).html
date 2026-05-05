@@ -1,0 +1,2719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cascade Hideaway — Cleaner Onboarding v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── CSS VARIABLES ───────────────────────────────────────── */
+:root {
+  /* BASE = Calm Luxury Warm — Off-White / Dark Olive / Sage Teal + Honey */
+  --bg:          #F2EFEA;
+  --bg2:         #E8E2D8;
+  --bg-card:     rgba(242,239,234,0.70);
+  --bg-card2:    rgba(235,229,220,0.62);
+  --bg-inset:    #EDE5D8;
+  --mahogany:    #272401;
+  --gold:        #557373;
+  --gold-dk:     #3D5858;
+  --gold-lt:     #C8A870;
+  --gold-dim:    rgba(196,165,100,0.12);
+  --gold-bd:     rgba(196,165,100,0.32);
+  --txt:         #0D0D0D;
+  --txt2:        #2A2A18;
+  --txt3:        #5A5848;
+  --danger:      #8C3520;
+  --danger-dim:  rgba(140,53,32,0.09);
+  --success:     #1e8c52;
+  --success-dim: rgba(30,140,82,0.08);
+  --warn:        #7A6010;
+  --warn-dim:    rgba(122,96,16,0.09);
+  --shadow-sm:   0 2px 10px rgba(39,36,1,0.10);
+  --shadow-md:   0 4px 18px rgba(39,36,1,0.13);
+  --r:           12px;
+  --r-sm:        8px;
+  --nav-h:       56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  background-image: radial-gradient(ellipse 120% 60% at 20% 10%, rgba(255,255,255,0.38) 0%, transparent 60%),
+                    radial-gradient(ellipse 80% 80% at 80% 90%, rgba(0,0,0,0.04) 0%, transparent 70%);
+  color: var(--txt);
+  font-family: 'Raleway', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.65;
+  min-height: 100vh;
+  padding-bottom: 80px;
+  overflow-x: hidden;
+}
+
+.site-header {
+  background: linear-gradient(180deg, #0D0D0D 0%, #272401 55%, #E8E4DE 100%);
+  padding: 32px 20px 26px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: background 420ms ease-in-out;
+}
+/* Glow layers — two pseudo-elements stacked; we cross-fade them with opacity */
+.site-header::before,
+.site-header::after {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  transition: opacity 420ms ease-in-out;
+}
+/* Heritage glow (teal) — always present, fades out on other themes */
+.site-header::before {
+  background: radial-gradient(ellipse 80% 100% at 50% 0%, rgba(196,165,100,0.30) 0%, transparent 68%);
+  opacity: 1;
+}
+/* Accent glow — overlaid, opacity driven by theme class */
+.site-header::after {
+  background: radial-gradient(ellipse 80% 100% at 50% 0%, rgba(196,165,100,0.30) 0%, transparent 68%);
+  opacity: 0;
+}
+/* ── Executive glow (lavender tint) */
+body.theme-executive .site-header::after {
+  background: radial-gradient(ellipse 80% 100% at 50% 0%, rgba(196,165,100,0.24) 0%, transparent 68%);
+  opacity: 1;
+}
+body.theme-executive .site-header::before { opacity: 0; }
+/* ── Organic glow (warm teal) */
+body.theme-organic .site-header::after {
+  background: radial-gradient(ellipse 80% 100% at 50% 0%, rgba(196,165,100,0.20) 0%, transparent 68%);
+  opacity: 1;
+}
+body.theme-organic .site-header::before { opacity: 0; }
+
+/* ── Executive header gradient (olive → lavender) */
+body.theme-executive .site-header {
+  background: linear-gradient(180deg, #0D0D0D 0%, #272401 55%, #D3D9EB 100%);
+}
+/* ── Organic header gradient (olive → warm neutral) */
+body.theme-organic .site-header {
+  background: linear-gradient(180deg, #0D0D0D 0%, #272401 55%, #DEDAD4 100%);
+}
+
+.brand-eyebrow {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 3.5px; text-transform: uppercase;
+  color: #C8A870; margin-bottom: 9px;
+  transition: color 420ms ease-in-out;
+}
+body.theme-executive .brand-eyebrow { color: #C8A870; }
+body.theme-organic  .brand-eyebrow { color: #C8A870; }
+
+.site-header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px, 6.5vw, 34px);
+  font-weight: 500; color: #F2EFEA;
+  line-height: 1.1; margin-bottom: 6px;
+}
+.site-header .tagline {
+  font-size: 12px; color: rgba(242,239,234,0.75);
+  font-style: italic; font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.4px;
+  transition: color 420ms ease-in-out;
+}
+body.theme-executive .site-header .tagline { color: rgba(242,235,220,0.74); }
+body.theme-organic  .site-header .tagline  { color: rgba(236,234,228,0.74); }
+
+.version-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 14px;
+  background: rgba(196,165,100,0.14); border: 1px solid rgba(196,165,100,0.36);
+  border-radius: 99px; padding: 3px 12px;
+  font-size: 10px; color: #C8A870; letter-spacing: 0.5px;
+  transition: color 420ms ease-in-out, background 420ms ease-in-out, border-color 420ms ease-in-out;
+}
+body.theme-executive .version-chip {
+  background: rgba(196,165,100,0.12); border-color: rgba(196,165,100,0.32); color: #C8A870;
+}
+body.theme-organic .version-chip {
+  background: rgba(196,165,100,0.12); border-color: rgba(196,165,100,0.30); color: #C8A870;
+}
+
+/* ── NAV TABS ────────────────────────────────────────────── */
+.tab-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: #E8E4DE;
+  border-bottom: 2px solid rgba(196,165,100,0.30);
+  display: flex; overflow-x: auto;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  box-shadow: var(--shadow-sm);
+}
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex: none; padding: 0 13px; height: var(--nav-h);
+  background: none; border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--txt3); font-family: 'Raleway', sans-serif;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  cursor: pointer; white-space: nowrap;
+  transition: color 180ms ease-out, border-color 180ms ease-out;
+  display: flex; align-items: center; gap: 5px;
+  outline: none; margin-bottom: -2px; min-height: var(--nav-h);
+}
+.tab-btn:focus-visible { outline: 2px solid #557373; outline-offset: -2px; }
+.tab-btn.active { color: #3D5858; border-bottom-color: #557373; }
+.tab-btn .tab-icon { font-size: 14px; }
+
+/* ── SWIPE HINT ──────────────────────────────────────────── */
+.swipe-hint {
+  text-align: center; font-size: 12px; color: var(--txt3);
+  letter-spacing: 0.3px; padding: 8px 16px;
+  background: var(--gold-dim); border-bottom: 1px solid var(--gold-bd);
+  opacity: 0; max-height: 0; overflow: hidden;
+  transition: opacity 400ms ease, max-height 400ms ease;
+  pointer-events: none;
+}
+.swipe-hint.visible { opacity: 1; max-height: 40px; }
+
+/* ── PANELS ──────────────────────────────────────────────── */
+.tab-panel { display: none; padding: 20px 16px 0; }
+.tab-panel.active { display: block; }
+
+/* ── LEARNING OBJECTIVE ──────────────────────────────────── */
+.learning-obj {
+  background: var(--mahogany); color: var(--gold-lt);
+  border-radius: var(--r-sm); padding: 10px 14px;
+  font-size: 12.5px; line-height: 1.5;
+  margin-bottom: 16px; border: 1px solid rgba(196,165,100,0.30);
+}
+.learning-obj strong { color: var(--gold); }
+#tab-before .learning-obj strong,
+#tab-training .learning-obj strong {
+  color: #C8A870; /* warm honey — legible on dark olive bg */
+}
+
+/* ── COMMON COMPONENTS ───────────────────────────────────── */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 600;
+  color: var(--mahogany); margin-bottom: 4px; line-height: 1.2;
+}
+.section-desc { font-size: 12.5px; color: var(--txt3); margin-bottom: 14px; }
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-bd), transparent);
+  margin: 22px 0;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid rgba(28,16,6,0.09);
+  border-radius: var(--r);
+  padding: 15px 16px; margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.card-title {
+  font-weight: 700; font-size: 13.5px; color: var(--mahogany);
+  margin-bottom: 7px; display: flex; align-items: center; gap: 7px;
+}
+.card-body { font-size: 13px; color: var(--txt2); line-height: 1.7; }
+.card-body strong { color: var(--mahogany); font-weight: 700; }
+.card-body a { color: var(--gold-dk); text-decoration: underline; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 99px;
+}
+.badge-gold  { background: var(--gold-dim);    border: 1px solid var(--gold-bd);              color: var(--gold-dk); }
+.badge-green { background: var(--success-dim); border: 1px solid rgba(30,140,82,0.3);          color: var(--success); }
+.badge-warn  { background: var(--warn-dim);    border: 1px solid rgba(181,96,16,0.3);          color: var(--warn); }
+.badge-red   { background: var(--danger-dim);  border: 1px solid rgba(184,48,32,0.3);          color: var(--danger); }
+
+/* ── NON-NEGOTIABLE ITEM ─────────────────────────────────── */
+.nn-item {
+  background: var(--bg-card);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 13px 15px; margin-bottom: 10px;
+  box-shadow: var(--shadow-sm);
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.nn-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--gold-dim); border: 1.5px solid var(--gold-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--gold-dk); flex-shrink: 0;
+}
+.nn-body { flex: 1; }
+.nn-headline { display: block; font-weight: 700; color: var(--mahogany); font-size: 14.5px; margin-bottom: 4px; }
+.nn-explain { display: block; font-size: 12.5px; color: var(--txt2); margin-bottom: 6px; line-height: 1.6; }
+.nn-test {
+  display: block; font-size: 12px; color: var(--success);
+  background: var(--success-dim); border: 1px solid rgba(30,140,82,0.2);
+  border-radius: 6px; padding: 6px 10px; line-height: 1.55;
+}
+.nn-test strong { color: var(--success); }
+
+/* ── PASS / FAIL GRID ────────────────────────────────────── */
+.pass-fail-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin: 10px 0 14px;
+}
+.pass-col, .fail-col {
+  border-radius: var(--r-sm); padding: 10px 11px;
+  font-size: 12px; color: var(--txt2); line-height: 1.55;
+}
+.pass-col { background: var(--success-dim); border: 1.5px solid rgba(30,140,82,0.35); }
+.fail-col { background: var(--danger-dim);  border: 1.5px solid rgba(184,48,32,0.35); }
+.pf-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px;
+}
+.pass-label { color: var(--success); }
+.fail-label { color: var(--danger); }
+
+/* ── PHOTO FIGURE ────────────────────────────────────────── */
+.photo-figure {
+  margin: 12px 0; border-radius: var(--r-sm);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(28,16,6,0.09);
+}
+.photo-figure img {
+  display: block; width: 100%; height: 200px;
+  object-fit: cover; border-radius: 0;
+}
+.photo-figure img.photo-tall { height: 240px; }
+.photo-figure figcaption {
+  background: var(--mahogany); color: rgba(247,242,232,0.80);
+  font-size: 11.5px; padding: 8px 13px; line-height: 1.5;
+  border-top: 1px solid rgba(196,165,100,0.20);
+}
+.photo-figure figcaption strong { color: var(--gold-lt); }
+
+/* ── BEFORE-LEAVE PHOTO GRID ─────────────────────────────── */
+.before-leave-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin: 10px 0 14px;
+}
+.before-leave-item {
+  border-radius: var(--r-sm); overflow: hidden;
+  box-shadow: var(--shadow-sm); border: 1px solid rgba(28,16,6,0.09);
+}
+.before-leave-item img {
+  display: block; width: 100%; height: 110px; object-fit: cover;
+}
+.before-leave-item figcaption {
+  background: var(--mahogany); color: rgba(247,242,232,0.80);
+  font-size: 10.5px; padding: 6px 9px; line-height: 1.4;
+}
+
+/* ── STEP LIST ───────────────────────────────────────────── */
+.step-list { list-style: none; counter-reset: step; }
+.step-list li {
+  counter-increment: step; display: flex; gap: 11px;
+  align-items: flex-start; padding: 9px 0;
+  border-bottom: 1px solid rgba(28,16,6,0.06);
+  font-size: 13px; color: var(--txt2);
+}
+.step-list li:last-child { border-bottom: none; }
+.step-list li::before {
+  content: counter(step);
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--gold-dim); border: 1px solid var(--gold-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--gold-dk);
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-list li strong { color: var(--mahogany); }
+
+/* ── CONTACT CARD ────────────────────────────────────────── */
+.contact-card {
+  background: var(--bg-card); border: 1px solid var(--gold-bd);
+  border-radius: var(--r); padding: 14px 15px; margin-bottom: 10px;
+  display: flex; gap: 12px; align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+.contact-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--gold-dim); border: 2px solid var(--gold-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.contact-info .name { font-weight: 700; color: var(--mahogany); font-size: 14.5px; }
+.contact-info .role { font-size: 11px; color: var(--txt3); margin-bottom: 4px; letter-spacing: 0.3px; }
+.contact-info .reach { font-size: 12.5px; color: var(--txt2); }
+.contact-info .reach a { color: var(--gold-dk); font-weight: 600; text-decoration: none; }
+.contact-info .reach a:hover { text-decoration: underline; }
+
+/* ── TOOL CARD ───────────────────────────────────────────── */
+.tool-card {
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.09);
+  border-radius: var(--r); overflow: hidden; margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.tool-header {
+  background: var(--mahogany); padding: 13px 16px;
+  display: flex; align-items: center; gap: 11px;
+  border-bottom: 1px solid rgba(196,165,100,0.28);
+}
+.tool-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(196,165,100,0.14); border: 1px solid rgba(196,165,100,0.32);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.tool-name { font-weight: 700; color: var(--bg); font-size: 14px; }
+.tool-role { font-size: 11px; color: rgba(247,242,232,0.65); }
+.tool-body { padding: 14px 16px; }
+.tool-body p { font-size: 13px; color: var(--txt2); margin-bottom: 9px; }
+.tool-body p:last-child { margin-bottom: 0; }
+.tool-body p strong { color: var(--mahogany); }
+
+.btn-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 10px; padding: 10px 18px;
+  background: var(--mahogany); border: 1px solid rgba(196,165,100,0.32);
+  border-radius: var(--r-sm); color: var(--gold-lt);
+  font-family: 'Raleway', sans-serif; font-size: 12.5px; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  transition: background 200ms, border-color 200ms; min-height: 44px;
+}
+.btn-link:hover { background: #3D5858; border-color: #557373; }
+
+/* ── TRAINING TRACK ──────────────────────────────────────── */
+.stage-card {
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.09);
+  border-radius: var(--r); overflow: hidden; margin-bottom: 16px;
+  box-shadow: var(--shadow-sm); transition: border-color 300ms ease-out, opacity 300ms ease-out;
+}
+.stage-card.completed { border-color: rgba(30,140,82,0.5); }
+.stage-card.stage-locked { opacity: 0.45; }
+.stage-head {
+  padding: 14px 15px; background: var(--bg-card2);
+  border-bottom: 1px solid rgba(28,16,6,0.07);
+  display: flex; align-items: center; gap: 12px;
+}
+.stage-num {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--mahogany);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 600; color: var(--gold-lt); flex-shrink: 0;
+}
+.stage-card.completed .stage-num {
+  background: var(--success-dim); border: 1.5px solid rgba(30,140,82,0.4); color: var(--success);
+}
+.stage-label { flex: 1; }
+.stage-label .stage-name { font-weight: 700; color: var(--mahogany); font-size: 14px; }
+.stage-label .stage-day  { font-size: 11px; color: var(--txt3); margin-top: 1px; }
+.stage-status { font-size: 11px; font-weight: 600; }
+.stage-body { padding: 15px 16px; }
+.stage-body h4 {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--gold-dk); margin-bottom: 8px; margin-top: 14px;
+}
+.stage-body h4:first-child { margin-top: 0; }
+.check-list { list-style: none; }
+.check-list li {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 13px; color: var(--txt2); padding: 6px 0;
+  border-bottom: 1px solid rgba(28,16,6,0.05);
+}
+.check-list li:last-child { border-bottom: none; }
+.check-list li::before {
+  content: '✦'; color: var(--gold); font-size: 10px;
+  margin-top: 5px; flex-shrink: 0;
+}
+.check-list li strong { color: var(--mahogany); }
+.pass-box {
+  background: var(--success-dim); border: 1px solid rgba(30,140,82,0.22);
+  border-radius: var(--r-sm); padding: 11px 14px; margin-top: 12px;
+}
+.pass-box-title { font-size: 11px; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+.pass-box ul { list-style: none; }
+.pass-box ul li { font-size: 12.5px; color: var(--txt2); padding: 2px 0; }
+.pass-box ul li::before { content: '✓ '; color: var(--success); font-weight: 700; }
+
+.stage-encourage {
+  background: var(--gold-dim); border: 1px solid var(--gold-bd);
+  border-radius: var(--r-sm); padding: 11px 14px; margin-top: 12px;
+  font-size: 13px; color: var(--txt2); line-height: 1.6; font-style: italic;
+}
+.stage-encourage strong { color: var(--gold-dk); font-style: normal; }
+
+/* Sign-off area */
+.signoff-area {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid rgba(28,16,6,0.08);
+}
+.signoff-label {
+  font-size: 11px; color: var(--txt3); text-transform: uppercase;
+  letter-spacing: 0.8px; margin-bottom: 10px;
+}
+.signoff-confirmed {
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 13px; background: var(--success-dim);
+  border: 1px solid rgba(30,140,82,0.25); border-radius: var(--r-sm);
+  font-size: 13px; color: var(--success); font-weight: 600;
+}
+.signoff-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.signoff-input {
+  flex: 1; min-width: 150px;
+  background: var(--bg-inset); border: 1px solid rgba(28,16,6,0.15);
+  border-radius: var(--r-sm); color: var(--txt);
+  font-family: 'Raleway', sans-serif; font-size: 16px;
+  padding: 11px 13px; outline: none;
+  transition: border-color 150ms; min-height: 44px;
+}
+.signoff-input:focus { border-color: var(--gold); }
+.signoff-input::placeholder { color: var(--txt3); font-style: italic; font-size: 13px; }
+.btn-signoff {
+  padding: 10px 18px;
+  background: var(--mahogany);
+  border: 1px solid rgba(196,165,100,0.32); border-radius: var(--r-sm);
+  color: var(--gold-lt); font-family: 'Raleway', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+  cursor: pointer; white-space: nowrap;
+  transition: opacity 200ms; min-height: 44px;
+}
+.btn-signoff:hover { opacity: 0.85; }
+.signoff-error { font-size: 12px; color: var(--danger); margin-top: 6px; display: none; }
+
+/* Progress ring */
+.progress-summary {
+  background: var(--mahogany); border: 1px solid rgba(196,165,100,0.30);
+  border-radius: var(--r); padding: 16px 18px; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-md);
+}
+.progress-ring-wrap { flex-shrink: 0; }
+.progress-ring { transform: rotate(-90deg); }
+.ring-track { fill: none; stroke: rgba(247,242,232,0.12); stroke-width: 4; }
+.ring-fill  { fill: none; stroke: var(--gold); stroke-width: 4; stroke-linecap: round;
+              stroke-dasharray: 113; stroke-dashoffset: 113;
+              transition: stroke-dashoffset 600ms ease-out; }
+.progress-text { flex: 1; }
+.progress-text .big { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: var(--gold-lt); line-height: 1; margin-bottom: 3px; }
+.progress-text .sm  { font-size: 12px; color: rgba(247,242,232,0.65); }
+
+/* Callouts */
+.callout {
+  border-radius: var(--r-sm); padding: 12px 15px; margin-bottom: 12px;
+  font-size: 13px; line-height: 1.65;
+}
+.callout-gold  { background: var(--gold-dim);    border: 1px solid var(--gold-bd);                       color: var(--txt2); }
+.callout-warn  { background: var(--warn-dim);    border-left: 4px solid var(--warn);   color: var(--txt2); border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+.callout-green { background: var(--success-dim); border: 1px solid rgba(30,140,82,0.25);                  color: var(--txt2); }
+.callout-red   { background: var(--danger-dim);  border-left: 4px solid var(--danger); color: var(--txt2); border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+.callout strong { color: var(--mahogany); font-weight: 700; }
+
+/* Don't-miss callout */
+.callout-dont-miss {
+  background: var(--danger-dim); border: 2px solid var(--danger);
+  border-radius: var(--r-sm); padding: 14px 15px; margin-bottom: 14px;
+  font-size: 13px; color: var(--txt2); line-height: 1.65;
+}
+.callout-dont-miss .dm-title {
+  font-weight: 700; font-size: 13.5px; color: var(--danger);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 7px;
+}
+.callout-dont-miss ol { padding-left: 18px; }
+.callout-dont-miss ol li { padding: 3px 0; line-height: 1.5; }
+.callout-dont-miss ol li strong { color: var(--danger); }
+
+/* Staging grid */
+.staging-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  margin-top: 8px; margin-bottom: 16px;
+}
+.staging-item {
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.08);
+  border-radius: var(--r-sm); padding: 12px; text-align: center; box-shadow: var(--shadow-sm);
+}
+.staging-item .s-icon  { font-size: 22px; margin-bottom: 5px; }
+.staging-item .s-label { font-size: 12.5px; font-weight: 700; color: var(--mahogany); margin-bottom: 3px; }
+.staging-item .s-spec  { font-size: 11px; color: var(--txt3); line-height: 1.4; }
+
+/* App walkthrough */
+.app-step {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 0; border-bottom: 1px solid rgba(28,16,6,0.07);
+}
+.app-step:last-child { border-bottom: none; }
+.app-step-num {
+  width: 32px; height: 32px; border-radius: 10px;
+  background: var(--mahogany);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-weight: 600; color: var(--gold-lt); flex-shrink: 0;
+}
+.app-step-content { flex: 1; }
+.app-step-title { font-weight: 700; color: var(--mahogany); font-size: 14px; margin-bottom: 4px; }
+.app-step-desc { font-size: 13px; color: var(--txt2); line-height: 1.6; }
+.app-step-desc strong { color: var(--mahogany); }
+.screen-mockup {
+  background: var(--mahogany); border-radius: 10px; padding: 11px 13px; margin-top: 9px;
+  font-family: 'Raleway', sans-serif; font-size: 12px; color: rgba(247,242,232,0.80); line-height: 1.6;
+}
+.screen-mockup .mock-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 7px; border-bottom: 1px solid rgba(196,165,100,0.28);
+  margin-bottom: 8px; font-size: 10.5px; color: rgba(247,242,232,0.55);
+}
+.screen-mockup .mock-label { font-weight: 700; color: var(--gold-lt); }
+.screen-mockup .mock-row {
+  display: flex; align-items: center; gap: 8px; padding: 4px 0;
+}
+.screen-mockup .mock-check {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid rgba(196,165,100,0.38);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--gold-lt); flex-shrink: 0;
+}
+.screen-mockup .mock-check.done { background: rgba(196,165,100,0.14); }
+.screen-mockup .mock-progress-bar {
+  height: 4px; background: rgba(255,255,255,0.1);
+  border-radius: 2px; margin-bottom: 8px; overflow: hidden;
+}
+.screen-mockup .mock-progress-fill { height: 100%; background: var(--gold); border-radius: 2px; }
+
+/* Quick Card */
+.qc-section {
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.09);
+  border-radius: var(--r); overflow: hidden; margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.qc-head {
+  background: var(--mahogany); padding: 10px 14px;
+  display: flex; align-items: center; gap: 9px;
+  font-weight: 700; font-size: 12px; color: var(--gold-lt);
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
+.qc-body { padding: 12px 14px; }
+.qc-seq-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 6px 0; border-bottom: 1px solid rgba(28,16,6,0.05);
+  font-size: 13px; color: var(--txt2);
+}
+.qc-seq-item:last-child { border-bottom: none; }
+.qc-seq-num {
+  width: 20px; height: 20px; border-radius: 5px;
+  background: var(--mahogany);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9.5px; font-weight: 700; color: var(--gold-lt);
+  flex-shrink: 0; margin-top: 2px;
+}
+.qc-seq-item strong { color: var(--mahogany); }
+.qc-nn-row {
+  display: flex; gap: 10px; align-items: center;
+  padding: 7px 0; border-bottom: 1px solid rgba(28,16,6,0.05);
+  font-size: 13px; color: var(--txt2);
+}
+.qc-nn-row:last-child { border-bottom: none; }
+.qc-nn-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--gold-dim); border: 1.5px solid var(--gold-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--gold-dk); flex-shrink: 0;
+}
+.if-then-row {
+  font-size: 12.5px; color: var(--txt2);
+  padding: 7px 0; border-bottom: 1px solid rgba(28,16,6,0.05); line-height: 1.55;
+}
+.if-then-row:last-child { border-bottom: none; }
+.if-lbl   { font-weight: 700; color: var(--danger); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+.then-lbl { font-weight: 700; color: var(--success); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Quick card 5-second reminder */
+.qc-reminder {
+  background: var(--mahogany); border-radius: var(--r-sm);
+  padding: 13px 15px; margin-bottom: 14px;
+  border: 1px solid rgba(196,165,100,0.32);
+}
+.qc-reminder-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+}
+.qc-reminder-row {
+  display: flex; gap: 9px; align-items: flex-start;
+  padding: 5px 0; font-size: 12.5px; color: rgba(247,242,232,0.85);
+  border-bottom: 1px solid rgba(196,165,100,0.12);
+}
+.qc-reminder-row:last-child { border-bottom: none; }
+.qc-reminder-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(196,165,100,0.20); border: 1px solid var(--gold-bd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9.5px; font-weight: 700; color: var(--gold-lt); flex-shrink: 0; margin-top: 1px;
+}
+.qc-reminder-row strong { color: var(--gold-lt); }
+
+/* Hospital corners */
+.hc-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px solid rgba(28,16,6,0.06);
+}
+.hc-step:last-child { border-bottom: none; }
+.hc-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--mahogany); flex-shrink: 0;
+}
+.hc-text { font-size: 13px; color: var(--txt2); line-height: 1.6; }
+.hc-text strong { color: var(--mahogany); }
+.hc-confirm {
+  font-size: 11.5px; color: var(--success);
+  background: var(--success-dim); border: 1px solid rgba(30,140,82,0.2);
+  border-radius: 5px; padding: 4px 8px; margin-top: 5px; display: block; line-height: 1.5;
+}
+
+/* Section sub-heading */
+.sub-head {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 600; color: var(--mahogany);
+  margin-bottom: 12px; margin-top: 4px;
+}
+
+/* Quiz / self-test */
+.quiz-card {
+  background: var(--bg-inset); border: 1px solid var(--gold-bd);
+  border-radius: var(--r-sm); padding: 13px 15px; margin-bottom: 10px;
+}
+.quiz-q { font-size: 13.5px; font-weight: 600; color: var(--mahogany); margin-bottom: 8px; }
+.quiz-reveal {
+  font-size: 13px; color: var(--txt3);
+  cursor: pointer; text-decoration: underline;
+  text-underline-offset: 3px; text-decoration-style: dashed;
+  display: inline-block; margin-bottom: 4px;
+}
+.quiz-reveal:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 3px; }
+.quiz-answer {
+  display: none; font-size: 13px; color: var(--txt2);
+  background: var(--success-dim); border: 1px solid rgba(30,140,82,0.2);
+  border-radius: 6px; padding: 8px 11px; margin-top: 7px; line-height: 1.6;
+}
+.quiz-answer.visible { display: block; }
+.quiz-answer strong { color: var(--success); }
+
+/* Photo guide items */
+.photo-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0;
+}
+.photo-item {
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.09);
+  border-radius: var(--r-sm); padding: 11px 12px; text-align: center;
+}
+.photo-item .ph-icon  { font-size: 24px; margin-bottom: 5px; }
+.photo-item .ph-label { font-size: 12.5px; font-weight: 700; color: var(--mahogany); margin-bottom: 3px; }
+.photo-item .ph-desc  { font-size: 11px; color: var(--txt3); line-height: 1.4; }
+
+/* Tip strip */
+.tip-strip {
+  display: flex; gap: 7px; align-items: flex-start;
+  padding: 10px 12px; background: var(--gold-dim);
+  border: 1px solid var(--gold-bd); border-radius: var(--r-sm);
+  font-size: 12.5px; color: var(--txt2); margin-bottom: 8px; line-height: 1.6;
+}
+.tip-strip strong { color: var(--gold-dk); }
+.tip-strip .tip-icon { flex-shrink: 0; font-size: 16px; }
+
+/* Partnership card */
+.partnership-card {
+  background: var(--mahogany); border: 1px solid rgba(196,165,100,0.32);
+  border-radius: var(--r); padding: 18px 17px; margin-bottom: 12px;
+  box-shadow: var(--shadow-md);
+}
+.partnership-card .pc-eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+}
+.partnership-card p { font-size: 13.5px; color: rgba(247,242,232,0.85); line-height: 1.75; }
+.partnership-card strong { color: var(--gold-lt); }
+
+/* Tab progress dots on Welcome */
+.tab-dots-wrap {
+  text-align: center; margin: 18px 0 6px;
+}
+.tab-dots {
+  display: inline-flex; gap: 8px; align-items: center; justify-content: center;
+}
+.tab-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: transparent; border: 2px solid rgba(196,165,100,0.36);
+  transition: background 300ms, border-color 300ms;
+}
+.tab-dot.visited { background: var(--gold); border-color: var(--gold); }
+.dot-label { font-size: 11px; color: var(--txt3); text-align: center; margin-top: 6px; margin-bottom: 0; }
+
+/* Flow pills (Start Here) */
+.flow-pills-wrap {
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  margin: 14px -4px 18px; padding: 0 4px;
+}
+.flow-pills-wrap::-webkit-scrollbar { display: none; }
+.flow-pills {
+  display: inline-flex; gap: 0; align-items: center;
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.09);
+  border-radius: 99px; padding: 5px; box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+.flow-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 12px; border-radius: 99px;
+  background: transparent; border: none; cursor: pointer;
+  font-family: 'Raleway', sans-serif; font-size: 11px; font-weight: 600;
+  color: var(--txt3); letter-spacing: 0.2px; white-space: nowrap;
+  transition: background 200ms, color 200ms; min-height: 36px;
+}
+.flow-pill:hover { background: var(--gold-dim); color: var(--gold-dk); }
+.flow-pill.active, .flow-pill.visited {
+  background: var(--mahogany); color: var(--gold-lt);
+}
+.flow-pill.active { background: var(--gold); color: var(--mahogany); }
+.flow-arrow { color: rgba(28,16,6,0.25); font-size: 11px; padding: 0 2px; }
+
+/* Time planning card */
+.time-plan { list-style: none; margin: 10px 0 8px; }
+.time-plan li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 6px 0; border-bottom: 1px solid rgba(28,16,6,0.05);
+  font-size: 12.5px; color: var(--txt2);
+}
+.time-plan li:last-child { border-bottom: none; }
+.time-plan .t-slot {
+  font-weight: 700; color: var(--mahogany); width: 70px; flex-shrink: 0; font-size: 12px;
+}
+
+/* Chemical diagram */
+.chem-diagram {
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--bg-inset); border: 1px solid rgba(28,16,6,0.09);
+  border-radius: var(--r-sm); padding: 14px; margin: 10px 0;
+}
+.chem-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; font-size: 12.5px; color: var(--txt2);
+}
+.chem-box {
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.12);
+  border-radius: var(--r-sm); padding: 7px 12px;
+  font-weight: 700; color: var(--mahogany); font-size: 12px;
+  text-align: center; flex: 1;
+}
+.chem-x {
+  font-size: 18px; font-weight: 700; color: var(--danger); flex-shrink: 0;
+}
+
+/* Smell/Photo protocol repeat badge */
+.repeat-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; color: var(--warn);
+  padding: 2px 7px; border-radius: 99px;
+  background: var(--warn-dim); border: 1px solid rgba(181,96,16,0.3);
+  margin-left: 6px; vertical-align: middle;
+}
+
+/* Wifi card */
+.wifi-card {
+  background: var(--mahogany); border: 1px solid rgba(196,165,100,0.32);
+  border-radius: var(--r-sm); padding: 13px 15px; margin-bottom: 10px;
+}
+.wifi-card .wifi-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.wifi-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(196,165,100,0.12); }
+.wifi-row:last-child { border-bottom: none; padding-top: 8px; }
+.wifi-label { font-size: 11px; color: rgba(247,242,232,0.55); }
+.wifi-value { font-size: 13px; font-weight: 700; color: var(--gold-lt); letter-spacing: 0.3px; }
+
+/* Sequence group */
+.seq-group { margin-bottom: 14px; }
+.seq-group-title {
+  font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold-dk); margin-bottom: 8px; margin-top: 14px;
+  padding-bottom: 4px; border-bottom: 1px solid var(--gold-bd);
+}
+
+/* Animations */
+@media (prefers-reduced-motion: no-preference) {
+  .tab-panel.active { animation: fadeUp 360ms ease-out both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ── COLLAPSIBLE SECTIONS (Standards) ───────────────────── */
+details.collapsible-section { margin: 0; }
+details.collapsible-section > summary.collapsible-head {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--gold-dk);
+  padding: 12px 15px; margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--bg-card2) 0%, rgba(196,136,42,0.08) 100%);
+  border: 1.5px solid var(--gold-bd); border-radius: var(--r-sm);
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: space-between; list-style: none;
+  user-select: none; -webkit-tap-highlight-color: transparent;
+  transition: background 150ms; min-height: 44px;
+}
+details.collapsible-section > summary.collapsible-head:hover { background: var(--gold-dim); }
+details.collapsible-section > summary.collapsible-head::-webkit-details-marker,
+details.collapsible-section > summary.collapsible-head::marker { display:none; content:''; }
+details.collapsible-section > summary.collapsible-head::after {
+  content: '+'; font-size: 22px; color: var(--gold);
+  font-weight: 300; line-height: 0.8; flex-shrink: 0; margin-left: 8px;
+}
+details.collapsible-section[open] > summary.collapsible-head::after { content: '−'; }
+details.collapsible-section[open] > summary.collapsible-head {
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+}
+details.collapsible-section > .collapsible-body {
+  border: 1.5px solid var(--gold-bd); border-top: none;
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+  padding: 2px 0 8px;
+}
+
+/* ── COLLAPSIBLE QC-SECTIONS (Quick Card) ────────────────── */
+details.collapsible-qc {
+  background: var(--bg-card); border: 1px solid rgba(28,16,6,0.09);
+  border-radius: var(--r); overflow: hidden; margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+details.collapsible-qc > summary.qc-head {
+  cursor: pointer; list-style: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex; align-items: center; justify-content: space-between;
+}
+details.collapsible-qc > summary.qc-head::-webkit-details-marker,
+details.collapsible-qc > summary.qc-head::marker { display:none; content:''; }
+details.collapsible-qc > summary.qc-head::after {
+  content: '+'; font-size: 17px; color: rgba(247,242,232,0.5);
+  font-weight: 300; line-height: 1; flex-shrink: 0; margin-left: 8px;
+}
+details.collapsible-qc[open] > summary.qc-head::after { content: '−'; }
+
+/* ════════════════════════════════════════════════════════
+   PER-TAB COLOR THEMES — 60-30-10 Rule Applied
+   ════════════════════════════════════════════════════════ */
+
+/* 1. CALM LUXURY — WARM — Welcome + Standards
+   Off-White Linen / Dark Olive / Sage Teal + Honey Amber  */
+#tab-welcome, #tab-standards {
+  --bg: #F2EFEA; --bg2: #E8E2D8; --bg-card: rgba(242,239,234,0.70);
+  --bg-card2: rgba(235,229,220,0.62); --bg-inset: #EDE5D8;
+  --mahogany: #272401; --gold: #557373; --gold-dk: #3D5858;
+  --gold-lt: #C8A870; --gold-dim: rgba(196,165,100,0.12);
+  --gold-bd: rgba(196,165,100,0.32); --txt: #0D0D0D;
+  --txt2: #2A2A18; --txt3: #5A5848;
+  --shadow-sm: 0 2px 10px rgba(39,36,1,0.10);
+  --shadow-md: 0 4px 18px rgba(39,36,1,0.13);
+}
+
+/* 2. CALM LUXURY — LAVENDER — Checklist App + Quick Card
+   Soft Lavender-Blue / Dark Olive / Sage Teal + Honey     */
+#tab-tools, #tab-quickcard {
+  --bg: #DFE5F3; --bg2: #D3D9EB; --bg-card: rgba(255,255,255,0.78);
+  --bg-card2: rgba(248,248,252,0.70); --bg-inset: #D8D0C4;
+  --mahogany: #272401; --gold: #557373; --gold-dk: #3D5858;
+  --gold-lt: #C8A870; --gold-dim: rgba(39,36,1,0.07);
+  --gold-bd: rgba(39,36,1,0.18); --txt: #0D0D0D;
+  --txt2: #1E1E0E; --txt3: #3E3C30;
+  --shadow-sm: 0 2px 12px rgba(39,36,1,0.11);
+  --shadow-md: 0 4px 20px rgba(39,36,1,0.14);
+}
+#tab-tools .callout-gold, #tab-quickcard .callout-gold {
+  background: rgba(196,165,100,0.10); border-color: rgba(196,165,100,0.28);
+}
+
+/* 3. CALM LUXURY — NEUTRAL — Before Day 1 + Training
+   Warm Neutral / Dark Olive / Sage Teal + Honey Amber     */
+#tab-before, #tab-training {
+  --bg: #ECEAE4; --bg2: #E0DAD0; --bg-card: rgba(236,234,228,0.70);
+  --bg-card2: rgba(228,222,215,0.62); --bg-inset: #D8D0C4;
+  --mahogany: #272401; --gold: #557373; --gold-dk: #3D5858;
+  --gold-lt: #C8A870; --gold-dim: rgba(196,165,100,0.11);
+  --gold-bd: rgba(196,165,100,0.30); --txt: #0D0D0D;
+  --txt2: #2A2A18; --txt3: #5A5848;
+  --shadow-sm: 0 2px 10px rgba(39,36,1,0.10);
+  --shadow-md: 0 4px 18px rgba(39,36,1,0.12);
+}
+
+/* Body background follows active tab theme (applied via JS) */
+body.theme-heritage  { background: #F2EFEA; }
+body.theme-executive { background: #DFE5F3; }
+body.theme-organic   { background: #ECEAE4; }
+
+/* Tab nav accent adapts per active theme */
+body.theme-executive .tab-btn.active {
+  color: #3D5858; border-bottom-color: #557373;
+}
+body.theme-executive .tab-nav {
+  background: #D3D9EB; border-bottom-color: rgba(196,165,100,0.30);
+}
+body.theme-organic .tab-btn.active {
+  color: #3D5858; border-bottom-color: #557373;
+}
+body.theme-organic .tab-nav {
+  background: #DEDAD4; border-bottom-color: rgba(196,165,100,0.28);
+}
+
+/* ── Smooth tab-switch theme transitions ─────────────────── */
+body {
+  transition: background-color 420ms ease-in-out;
+}
+.tab-nav {
+  transition: background-color 420ms ease-in-out,
+              border-bottom-color 420ms ease-in-out;
+}
+.tab-btn {
+  transition: color 200ms ease-out, border-color 200ms ease-out;
+}
+/* ── iOS GLASS EFFECT ────────────────────────────────────── */
+/* Applied to all card-like surfaces. backdrop-filter requires
+   a semi-transparent background on the element to work.     */
+.card,
+.contact-card,
+.nn-item,
+.staging-item,
+.photo-item,
+.quiz-card,
+.pass-col,
+.fail-col,
+.tool-card,
+.qc-section,
+details.collapsible-qc,
+.stage-card,
+.flow-pills,
+.wifi-card,
+.signoff-confirmed {
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+          backdrop-filter: blur(18px) saturate(160%);
+}
+
+/* Lighten borders to match frosted glass look */
+.card,
+.contact-card,
+.nn-item,
+.staging-item,
+.photo-item {
+  border-color: rgba(255,255,255,0.55);
+}
+/* Flow pills get a frosted pill look */
+.flow-pills {
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(255,255,255,0.45);
+}
+/* Stage cards */
+.stage-card {
+  background: var(--bg-card);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+          backdrop-filter: blur(18px) saturate(160%);
+  border-color: rgba(255,255,255,0.45);
+}
+/* Stage head inherits semi-transparency */
+.stage-head {
+  background: var(--bg-card2);
+  border-bottom-color: rgba(255,255,255,0.30);
+}
+/* Callouts — lighter glass tint */
+.callout-gold, .callout-green, .callout-warn, .callout-red {
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+          backdrop-filter: blur(12px) saturate(140%);
+}
+/* Don't-mix callout (danger) */
+.callout-dont-miss {
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+          backdrop-filter: blur(12px) saturate(140%);
+  background: rgba(140,53,32,0.07);
+  border-color: rgba(140,53,32,0.38);
+}
+/* Pass/fail grid cells */
+.pass-col {
+  background: rgba(30,140,82,0.07);
+  border-color: rgba(30,140,82,0.30);
+}
+.fail-col {
+  background: rgba(140,53,32,0.07);
+  border-color: rgba(140,53,32,0.28);
+}
+
+</style>
+<body>
+
+<header class="site-header">
+  <div class="brand-eyebrow">Cascade Hideaway</div>
+  <h1>Cleaner Onboarding</h1>
+  <p class="tagline">"Hotel Comfort. Home Warmth."</p>
+  <div class="version-chip">✦ Cleaner Training System v3.0</div>
+</header>
+
+<nav class="tab-nav" role="tablist" aria-label="Onboarding sections">
+  <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="welcome"   onclick="switchTab('welcome')">  <span class="tab-icon">🌿</span> Welcome</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="before"    onclick="switchTab('before')">   <span class="tab-icon">🔑</span> Before Day 1</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="tools"     onclick="switchTab('tools')">    <span class="tab-icon">📋</span> Checklist App</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="standards" onclick="switchTab('standards')"><span class="tab-icon">⭐</span> Standards</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="quickcard" onclick="switchTab('quickcard')"><span class="tab-icon">🃏</span> Quick Card</button>
+  <button class="tab-btn"        role="tab" aria-selected="false" data-tab="training"  onclick="switchTab('training')"> <span class="tab-icon">🎓</span> Training</button>
+</nav>
+
+<div id="swipe-hint" class="swipe-hint">← Swipe left or right to switch tabs →</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 1 — WELCOME
+══════════════════════════════════════════════════════ -->
+<section id="tab-welcome" class="tab-panel active" role="tabpanel">
+
+  <p class="section-title">Welcome to the Team</p>
+  <p class="section-desc">We're really glad you're here. 😊 This is your starting point — who we are, what this place is about, and how this guide works.</p>
+
+  <div class="tab-dots-wrap">
+    <div class="tab-dots" id="tab-dots">
+      <div class="tab-dot visited" data-dot="welcome" title="Welcome"></div>
+      <div class="tab-dot" data-dot="before"    title="Before Day 1"></div>
+      <div class="tab-dot" data-dot="tools"     title="Checklist App"></div>
+      <div class="tab-dot" data-dot="standards" title="Standards"></div>
+      <div class="tab-dot" data-dot="quickcard" title="Quick Card"></div>
+      <div class="tab-dot" data-dot="training"  title="Training"></div>
+    </div>
+    <p class="dot-label" id="dot-label">You have read 1 of 6 sections</p>
+  </div>
+
+  <div class="callout callout-gold">
+    📌 <strong>Bookmark this page on your phone.</strong> Read it once before your first day, then come back during every turnover — especially the Quick Card tab.<br><br>
+    You don't need to memorize everything. Just know where to find it.
+  </div>
+
+  <!-- START HERE FLOW PILLS -->
+  <p style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--txt3); margin-bottom:6px;">Start Here — Read in This Order</p>
+  <div class="flow-pills-wrap">
+    <div class="flow-pills">
+      <button class="flow-pill active" data-tab="welcome"   onclick="switchTab('welcome')">  🌿 Welcome</button>
+      <span class="flow-arrow">→</span>
+      <button class="flow-pill" data-tab="before"    onclick="switchTab('before')">   🔑 Before Day 1</button>
+      <span class="flow-arrow">→</span>
+      <button class="flow-pill" data-tab="tools"     onclick="switchTab('tools')">    📋 Checklist App</button>
+      <span class="flow-arrow">→</span>
+      <button class="flow-pill" data-tab="standards" onclick="switchTab('standards')">⭐ Standards</button>
+      <span class="flow-arrow">→</span>
+      <button class="flow-pill" data-tab="quickcard" onclick="switchTab('quickcard')">🃏 Quick Card</button>
+      <span class="flow-arrow">→</span>
+      <button class="flow-pill" data-tab="training"  onclick="switchTab('training')"> 🎓 Training</button>
+    </div>
+  </div>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1kIwtCJt7EUyNhkm_n3yuboZUcWhrl-ED&sz=w800"
+         alt="Cascade Hideaway studio — full interior view showing the living area, bed, and kitchen"
+         loading="lazy" width="100%">
+    <figcaption>This is Cascade Hideaway — the unit you will be caring for every turnover. Your job is to make it look exactly like this before every new guest arrives.</figcaption>
+  </figure>
+
+  <div class="card">
+    <div class="card-title">🏡 What Is Cascade Hideaway?</div>
+    <div class="card-body">
+      Cascade Hideaway is a cozy boutique Airbnb studio inside Bria Homes, General Santos City. We welcome guests through Airbnb — travelers, families, and business visitors looking for a comfortable, private place to stay in GenSan.<br><br>
+      Our promise to every guest: <strong>"Hotel Comfort. Home Warmth."</strong> ✨ Think spotlessly clean and fully stocked — but with the cozy feel of home.
+    </div>
+  </div>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=142N1o_Fa186ihTf7CN1cS06-XmH0Zos4&sz=w800"
+         alt="Cascade Hideaway bar counter area showing the clean, staged appearance guests expect"
+         loading="lazy" width="100%">
+    <figcaption>The bar counter is always staged clean. No items left on the counter unless they are part of the welcome setup.</figcaption>
+  </figure>
+
+  <div class="card">
+    <div class="card-title">⭐ Why Your Role Matters</div>
+    <div class="card-body">
+      Think about the last time you stayed somewhere really clean and comfortable. That feeling you had? <strong>You create that for every single guest who walks through that door.</strong> 🙌<br><br>
+      Airbnb reviews almost always mention cleanliness first. One great turnover earns a 5-star review. One missed detail can mean a bad review that affects bookings for weeks.<br><br>
+      <strong>You're not just cleaning. You're setting the stage for someone's whole GenSan experience.</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🤝 The Team</div>
+    <div class="card-body">You are part of a small, tight-knit team. Here is who does what:</div>
+  </div>
+
+  <div class="contact-card">
+    <div class="contact-avatar">👩</div>
+    <div class="contact-info">
+      <div class="name">Marifel</div>
+      <div class="role">Operations In-Charge &nbsp;·&nbsp; Your Direct Supervisor</div>
+      <div class="reach">Your primary contact for <strong>everything</strong> — scheduling, supplies, questions, issues. Message her first. Always.<br>
+        <a href="https://www.facebook.com/messages/t/999905149368383" target="_blank">💬 Message Marifel on Messenger</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="contact-avatar">👨‍✈️</div>
+    <div class="contact-info">
+      <div class="name">Lloyd (Management)</div>
+      <div class="role">Property Manager &nbsp;·&nbsp; Remote Oversight</div>
+      <div class="reach">Contact only when Marifel is unreachable and there is an urgent issue at the unit.<br>
+        <a href="mailto:cascadereservations@gmail.com">📧 cascadereservations@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="card">
+    <div class="card-title">📍 The Property</div>
+    <div class="card-body">
+      <strong>Block 47, Lot 39, Bria Homes</strong><br>
+      Conel Road, Brgy. San Isidro, General Santos City 9500<br><br>
+      You will receive specific access instructions from Marifel before every scheduled turnover. Do not share the unit PIN or location details with anyone.
+    </div>
+  </div>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1syYxcVVHXk5gP8zlFslKOB8TJgywKNjH&sz=w800"
+         alt="Guest manual placed on the table inside the Cascade Hideaway unit"
+         loading="lazy" width="100%">
+    <figcaption>The guest manual sits on the table. Make sure it is in this position, undamaged and open, when you finish staging.</figcaption>
+  </figure>
+
+  <div class="card">
+    <div class="card-title">📖 How to Use This Guide</div>
+    <div class="card-body">
+      This guide has <strong>6 tabs.</strong> Go through them once, in order. After that, keep these two handy during every turnover:<br><br>
+      📋 &nbsp;<strong>Checklist App</strong> — step by step, from the moment you arrive<br>
+      🃏 &nbsp;<strong>Quick Card</strong> — your one-screen cheat sheet while you clean<br><br>
+      The 🎓 <strong>Training</strong> tab tracks your 3 stages with Marifel's sign-off at each one.
+    </div>
+  </div>
+
+  <div class="callout callout-green">
+    <strong>Ready? Let's go.</strong> Work through each tab in order: Before Day 1 → Checklist App → Standards → Quick Card → Training. And if anything ever seems unclear, Marifel is always the first person to ask.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PARTNERSHIP STATEMENT -->
+  <div class="partnership-card">
+    <div class="pc-eyebrow">💛 A note from the team</div>
+    <p>You're not "just the cleaner." You're the last person who touches the unit before a guest arrives — and that makes you one of the most important people in making this work. <strong>Those 5-star reviews guests leave? A big part of that is you.</strong><br><br>Marifel is here to support you, not to watch over your shoulder. If something is unclear, ask. If something looks wrong, say something. We win together — and it starts with honest communication. 🤝</p>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 2 — BEFORE DAY 1
+══════════════════════════════════════════════════════ -->
+<section id="tab-before" class="tab-panel" role="tabpanel">
+
+  <p class="section-title">Before Day 1</p>
+  <p class="section-desc">Everything to know before you set foot in the unit.</p>
+
+    <div class="card-body">
+      When you arrive at the Bria Homes entrance gate, tell the guard:<br>
+      <strong>"I am the cleaner for Cascade Hideaway, Block 47, Lot 39."</strong><br><br>
+      They will let you through. If they ask for ID, show any valid ID. Do not enter without checking in with the guard.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ENTERING THE UNIT -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="card-title">🔑 How to Enter the Unit</div>
+  </div>
+
+  <figure class="photo-figure" style="margin-bottom:14px;">
+    <img src="https://drive.google.com/thumbnail?id=1TAfn0CC4muveqY8bK1igqa9BcVBjiVwV&sz=w800"
+         alt="Smart lock and door entry visual guide"
+         loading="lazy" width="100%" style="height:320px; object-fit:contain; background:#3A2010;">
+  </figure>
+
+  <div class="card">
+    <div class="card-title">🃏 The Key Card</div>
+    <div class="card-body">
+      Inside the unit, there is a <strong>key card</strong> on a Cascade Hideaway keychain, placed near the TV and remotes. You can tap this card on the keypad during your session instead of entering the PIN each time.<br><br>
+      <strong>Never take this card out of the unit.</strong> The replacement cost is <strong>₱1,000.</strong> If it is lost, report to Marifel immediately.
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>Security Rule:</strong> Never share the unit PIN with anyone — not neighbors, not family, not friends. If you lose access, message Marifel right away.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WHAT TO BRING -->
+  <div class="card">
+    <div class="card-title">🎒 What to Bring</div>
+    <div class="card-body">
+      All cleaning supplies are stocked inside — you don't need to bring your own.<br><br>
+      ✦ &nbsp;<strong>Phone</strong> — fully charged, Checklist App bookmarked<br>
+      ✦ &nbsp;<strong>Gloves</strong> — always wear when using cleaning chemicals<br>
+      ✦ &nbsp;Comfortable clothes you don't mind getting dirty<br>
+      ✦ &nbsp;Enough time — a standard turnover takes <strong>2 hours</strong>
+    </div>
+  </div>
+
+  <div class="callout callout-red">
+    <strong>⚠️ Know Cascade's Tools &amp; Appliances Before Your First Solo Clean</strong><br><br>
+    Every cleaning tool and appliance at Cascade Hideaway must be used correctly. Using the wrong setting or wrong technique can damage equipment and affect the next guest's experience.<br><br>
+    <strong>During your shadow day, ask Marifel to walk you through:</strong><br>
+    ✦ &nbsp;<strong>Washing machine</strong> — correct cycle, detergent compartment, load limits<br>
+    ✦ &nbsp;<strong>Cloth steamer</strong> — how to fill it, correct distance from fabric, storage position<br>
+    ✦ &nbsp;<strong>Air purifier</strong> — LOW vs HIGH modes, when to use each, filter indicator<br>
+    ✦ &nbsp;<strong>Vacuum cleaner</strong> — which attachment for carpet vs. hard floor<br>
+    ✦ &nbsp;<strong>Mop system</strong> — correct water ratio, figure-8 technique, drying the floor<br>
+    ✦ &nbsp;<strong>Cleaning chemicals</strong> — which product for which surface; what NOT to mix<br><br>
+    <strong>Do not operate any appliance you have not been shown.</strong> If unsure — ask Marifel first.
+  </div>
+
+    <div class="divider"></div>
+
+  <!-- 2-HOUR WINDOW -->
+  <div class="card">
+    <div class="card-title">⏱️ You Have Exactly 2 Hours — Not a Minute More</div>
+    <div class="card-body">
+      Guests check out at <strong>12:00 noon.</strong> The next guest arrives as early as <strong>2:00 PM.</strong> <strong style="color:var(--danger);">There is no buffer.</strong> Being on time is non-negotiable — a late finish means a guest walks into an unready unit. Message Marifel at the 90-minute mark if you are behind. Here is how to budget your time:
+      <ul class="time-plan" style="margin-top:12px;">
+        <li><span class="t-slot">First 15 min</span><span>Open windows, inspect the unit, start laundry</span></li>
+        <li><span class="t-slot">30–45 min</span><span>Bathroom deep clean + kitchen clean (let bathroom chemicals work while you do the kitchen)</span></li>
+        <li><span class="t-slot">20–30 min</span><span>Dust, wipe surfaces, sanitize high-touch items</span></li>
+        <li><span class="t-slot">20 min</span><span>Make the bed, restock all supplies</span></li>
+        <li><span class="t-slot">15 min</span><span>Vacuum, mop, stage the unit, fabric spray</span></li>
+        <li><span class="t-slot">10 min</span><span>Appliance check, final walk-through, submit checklist, send 4 photos</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-red">
+    ⏰ <strong>90-Minute Rule:</strong> If you are not at least 75% done by 90 minutes in, message Marifel immediately — not when time runs out. Early warning is the only thing that can save a late finish.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WIFI CREDENTIALS -->
+  <div class="wifi-card">
+    <div class="wifi-title">📶 Unit WiFi — For Operational Use</div>
+    <div class="wifi-row">
+      <span class="wifi-label">Network name</span>
+      <span class="wifi-value">WelcomeToCascade-5G</span>
+    </div>
+    <div class="wifi-row">
+      <span class="wifi-label">Password</span>
+      <span class="wifi-value">EnjoyYourStay@CH</span>
+    </div>
+    <div class="wifi-row">
+      <span class="wifi-label" style="font-size:11px; color:rgba(221,176,90,0.65);">Use this to run the Checklist App if your mobile data is slow</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SCHEDULING -->
+  <div class="card">
+    <div class="card-title">🗓️ How Scheduling Works</div>
+    <div class="card-body">
+      Marifel will message you in advance when a guest is checking out and a turnover is needed. She will tell you the checkout time, the check-in time, and any special instructions for that stay.<br><br>
+      ✦ &nbsp;Guests check out by <strong>12:00 noon</strong><br>
+      ✦ &nbsp;The next guest arrives as early as <strong>2:00 PM</strong><br><br>
+      <strong>Always confirm</strong> you received her message and that you are available. If you cannot make it, tell her at least the day before — not at the last minute.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ARRIVAL PROBLEMS -->
+  <div class="card">
+    <div class="card-title">🚨 If You Find a Problem on Arrival</div>
+    <div class="card-body">
+      If you arrive and find damage, something broken, or anything unusual — <strong>stop and photograph everything before touching anything.</strong> Send the photos to Marifel right away. Wait for her instruction before proceeding.<br><br>
+      <strong>This protects you.</strong> A timestamped photo is proof that the damage was not caused during your session.
+    </div>
+  </div>
+
+  <div class="callout callout-red">
+    <strong>Found a guest's belonging?</strong> Do not throw it away. Photograph it, note where you found it, and message Marifel. Guests do come back for items they left behind.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CHEMICAL SAFETY -->
+  <p class="sub-head">Chemical Safety</p>
+
+  <div class="chem-diagram">
+    <div class="chem-row">
+      <div class="chem-box">🧴 Bleach</div>
+      <div class="chem-x">✗</div>
+      <div class="chem-box">🍺 Alcohol</div>
+    </div>
+    <div class="chem-row">
+      <div class="chem-box">🧴 Bleach</div>
+      <div class="chem-x">✗</div>
+      <div class="chem-box">🍶 Vinegar</div>
+    </div>
+    <div class="chem-row">
+      <div class="chem-box">🧴 Bleach</div>
+      <div class="chem-x">✗</div>
+      <div class="chem-box">🚽 Acid Cleaner</div>
+    </div>
+    <p style="font-size:11px; color:var(--txt3); text-align:center; margin-top:6px;">Some products create <strong style="color:var(--danger);">dangerous fumes</strong> when mixed. Use one at a time. Rinse between products.</p>
+  </div>
+
+  <div class="callout callout-warn" style="margin-top:0;">
+    <strong>Safety rules:</strong> Always wear gloves. Keep windows open when using strong products. If a chemical splashes in your eyes, rinse with water and message Marifel. Store all chemicals in the supply cabinet — it has a latch.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT PROTOCOL -->
+  <p class="sub-head">Contact Protocol</p>
+
+  <div class="card">
+    <div class="card-title">📞 Who to Contact</div>
+    <div class="card-body">
+      <strong>Everything — always start with Marifel.</strong> Scheduling, supplies, questions, damage, anything unusual.<br><br>
+      <a class="btn-link" href="https://www.facebook.com/messages/t/999905149368383" target="_blank">💬 Message Marifel on Messenger</a><br><br>
+      <strong>Cannot reach Marifel?</strong> For urgent property decisions only — <strong>cascadereservations@gmail.com</strong><br><br>
+      <strong>🚒 Real emergency — leave first, then call:</strong><br>
+      📞 <strong>911</strong> &nbsp;·&nbsp; 📞 <strong>160</strong> (Fire) &nbsp;·&nbsp; 📞 <strong>09985987207</strong> (Police)
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 3 — CHECKLIST APP
+══════════════════════════════════════════════════════ -->
+<section id="tab-tools" class="tab-panel" role="tabpanel">
+
+  <p class="section-title">Checklist App Guide</p>
+  <p class="section-desc">Your three tools. Every turnover. No exceptions.</p>
+
+
+  <!-- TOOL 1: CHECKLIST APP -->
+  <div class="tool-card">
+    <div class="tool-header">
+      <div class="tool-icon">✅</div>
+      <div>
+        <div class="tool-name">Cascade Cleaning Checklist App</div>
+        <div class="tool-role">Open when you arrive. Submit before you leave.</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>This app is your step-by-step guide and report form for every session. Work through it section by section. Check items as you go. Submit before leaving. It records everything and notifies management automatically.</p>
+      <a class="btn-link" href="https://cascadereservations-del.github.io/CH-Cleaners-Checklist/" target="_blank">
+        📋 Open Checklist App
+      </a>
+    </div>
+  </div>
+
+  <p class="sub-head" style="margin-top:20px;">How to Use the App — Step by Step</p>
+
+  <div class="card" style="padding:14px 16px;">
+
+    <div class="app-step">
+      <div class="app-step-num" aria-hidden="true">1</div>
+      <div class="app-step-content">
+        <div class="app-step-title">Open the app and bookmark it</div>
+        <div class="app-step-desc">
+          Tap the button above or go to:<br>
+          <strong>cascadereservations-del.github.io/CH-Cleaners-Checklist/</strong><br><br>
+          To bookmark: tap the <strong>⋮ menu</strong> in Chrome → <strong>"Add to Home screen."</strong> This creates a shortcut on your phone that opens the app in one tap.
+        </div>
+        <div class="screen-mockup">
+          <div class="mock-bar"><span>CASCADE HIDEAWAY</span><span>Cleaning &amp; Turn-over Report</span></div>
+          <div style="font-size:10px; color:rgba(247,242,232,0.45); margin-bottom:6px;">Tap ⋮ in Chrome → Add to Home screen to save as shortcut</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-step">
+      <div class="app-step-num" aria-hidden="true">2</div>
+      <div class="app-step-content">
+        <div class="app-step-title">Select your name at the top</div>
+        <div class="app-step-desc">
+          When the app loads, find the <strong>name dropdown</strong> near the top. Tap it and select your name. This makes sure the report is recorded under your name when you submit.
+        </div>
+        <div class="screen-mockup">
+          <div class="mock-bar"><span>Progress: 0%</span><span>0 XP ⭐</span></div>
+          <div style="padding: 4px 0; font-size:11px; color: rgba(247,242,232,0.55);">Cleaner name:</div>
+          <div style="background: rgba(196,165,100,0.12); border: 1px solid rgba(196,165,100,0.32); border-radius:5px; padding: 6px 9px; font-size:12px; color: var(--gold-lt);">▾ Select your name</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-step">
+      <div class="app-step-num" aria-hidden="true">3</div>
+      <div class="app-step-content">
+        <div class="app-step-title">Work through each section in order</div>
+        <div class="app-step-desc">
+          The app has these sections: <strong>Arrival, Bathroom, Bedroom, Kitchen, Living Area, Final Check.</strong> Use <strong>← Prev / Next →</strong> at the bottom to move between sections.<br><br>
+          Tap each checkbox to mark it done. <strong>Do not skip items.</strong> If a supply is missing, note it in the comments before moving on.
+        </div>
+        <div class="screen-mockup">
+          <div class="mock-bar"><span>Section: Bathroom</span><span style="color:var(--gold-lt);">4 / 12 items</span></div>
+          <div class="mock-progress-bar"><div class="mock-progress-fill" style="width:33%"></div></div>
+          <div class="mock-row"><div class="mock-check done">✓</div><span>Toilet bowl cleaned inside &amp; out</span></div>
+          <div class="mock-row"><div class="mock-check done">✓</div><span>Chrome polished, no water marks</span></div>
+          <div class="mock-row"><div class="mock-check"></div><span>Floor mopped and dry</span></div>
+          <div class="mock-row"><div class="mock-check"></div><span>Mirror clean, no streaks</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-step">
+      <div class="app-step-num" aria-hidden="true">4</div>
+      <div class="app-step-content">
+        <div class="app-step-title">Watch your progress and XP go up</div>
+        <div class="app-step-desc">
+          As you check off items, the <strong>progress bar</strong> fills up and you earn <strong>XP points.</strong> Aim for 100% before you submit.
+        </div>
+        <div class="screen-mockup">
+          <div class="mock-bar"><span>Progress:</span><span style="color: var(--gold-lt);">68% — 42 XP ⭐</span></div>
+          <div class="mock-progress-bar"><div class="mock-progress-fill" style="width:68%"></div></div>
+          <div style="font-size:10.5px; color:rgba(247,242,232,0.5); margin-top:4px;">Keep going — almost done!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-step">
+      <div class="app-step-num" aria-hidden="true">5</div>
+      <div class="app-step-content">
+        <div class="app-step-title">Update Supplies before submitting</div>
+        <div class="app-step-desc">
+          Before you tap Submit, the app prompts you to update the <strong>Supplies / Inventory.</strong> Count what is left for each item — toilet paper rolls, shampoo sachets, coffee sachets, dishwashing soap, and more. Enter the numbers.<br><br>
+          This tells management when restocking is needed. It only takes 2 minutes. Do not skip it.
+        </div>
+        <div class="screen-mockup">
+          <div class="mock-bar"><span>🧴 Update Supplies</span><span>Before submitting</span></div>
+          <div class="mock-row" style="justify-content:space-between;"><span>Toilet paper (rolls)</span><span style="color:var(--gold-lt);">3 remaining</span></div>
+          <div class="mock-row" style="justify-content:space-between;"><span>Shampoo sachets</span><span style="color:var(--gold-lt);">4 remaining</span></div>
+          <div class="mock-row" style="justify-content:space-between;"><span>Coffee sachets</span><span style="color:#f0a060;">1 remaining ⚠️</span></div>
+        </div>
+        <div class="callout callout-warn" style="margin-top:8px; margin-bottom:0;">
+          <strong>If an item is at 1 or 2 remaining:</strong> note it in the app AND message Marifel separately so she can restock before the next guest.
+        </div>
+      </div>
+    </div>
+
+    <div class="app-step">
+      <div class="app-step-num" aria-hidden="true">6</div>
+      <div class="app-step-content">
+        <div class="app-step-title">Tap "Submit Report"</div>
+        <div class="app-step-desc">
+          After updating supplies, tap <strong>Submit Report.</strong> You will see a confirmation screen when it is sent. The report goes directly to management — no need to send anything separately.<br><br>
+          <strong>If you see an error:</strong> Take a screenshot and message Marifel before you leave the unit.
+        </div>
+        <div class="screen-mockup">
+          <div class="mock-bar"><span>✅ Report Submitted!</span><span style="color:#6fcf97;">Success</span></div>
+          <div style="text-align:center; padding: 8px 0;">
+            <div style="font-size:22px; margin-bottom:4px;">🏆</div>
+            <div style="font-size:11px; color: rgba(247,242,232,0.65);">Outstanding work! The report has been recorded.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-step">
+      <div class="app-step-num" aria-hidden="true">7</div>
+      <div class="app-step-content">
+        <div class="app-step-title">Send after-photos to Messenger</div>
+        <div class="app-step-desc">
+          After submitting the report, the app shows a <strong>"Send After Photos"</strong> button. Tap it to copy the summary text and open Messenger. <strong>Paste the text into the group chat, attach your 4 photos, and send.</strong><br><br>
+          See the Messenger section below for exactly which 4 photos to take.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tip-strip">
+    <span class="tip-icon">💡</span>
+    <span><strong>Key rule:</strong> Open the checklist app when you walk in — before you start cleaning. If you open it at the end and try to remember everything, you will miss things.</span>
+  </div>
+
+  <!-- QUIZ: Checklist App -->
+  <div class="quiz-card" style="margin-top:14px;">
+    <div class="quiz-q">❓ At what point in the session do you open the app — when you arrive, or when you finish?</div>
+    <span class="quiz-reveal" tabindex="0" role="button" onclick="toggleQuiz(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleQuiz(this)}">Tap to reveal answer</span>
+    <div class="quiz-answer"><strong>When you arrive.</strong> Open the app before you start cleaning. This starts the record and keeps you on track section by section. If you open it at the end, you will be guessing at what you did — and you will miss things.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TOOL 2: MESSENGER + Photo Protocol (2nd appearance) -->
+  <div class="tool-card">
+    <div class="tool-header">
+      <div class="tool-icon">📸</div>
+      <div>
+        <div class="tool-name">Facebook Messenger — Photo Group</div>
+        <div class="tool-role">Send 4 photos after every turnover, before you leave</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>After submitting your checklist, take <strong>4 after-photos</strong> and send them to the Cascade Hideaway group chat. These are your proof of completion and Marifel's remote quality check.</p>
+
+      <p><strong>The 4 required photos — every time, no exceptions:</strong></p>
+
+      <div class="photo-grid">
+        <div class="photo-item">
+          <div class="ph-icon">🛏️</div>
+          <div class="ph-label">1. Bed</div>
+          <div class="ph-desc">Full view. Both sides visible. All 4 pillows arranged.</div>
+        </div>
+        <div class="photo-item">
+          <div class="ph-icon">🚿</div>
+          <div class="ph-label">2. Bathroom</div>
+          <div class="ph-desc">Full view — toilet, sink, and shower in one shot.</div>
+        </div>
+        <div class="photo-item">
+          <div class="ph-icon">🍳</div>
+          <div class="ph-label">3. Kitchen</div>
+          <div class="ph-desc">Counters clear. Sink clean. Appliances wiped.</div>
+        </div>
+        <div class="photo-item">
+          <div class="ph-icon">🛋️</div>
+          <div class="ph-label">4. Living Area</div>
+          <div class="ph-desc">Wide shot from the door or corner of the room.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-warn" style="margin-top:4px; margin-bottom:10px;">
+        <strong>Do not leave the unit</strong> until you have sent these 4 photos. If Marifel does not reply within 15 minutes, you may leave — but you must have sent them first.
+      </div>
+
+      <p><strong>How to take a good photo:</strong><br>
+      Stand at the corner or doorway of the room. Hold your phone sideways (landscape). Make sure there is enough light — open the curtain or turn on the light before shooting. The photo should look like a hotel listing photo, not a quick snapshot.</p>
+
+      <a class="btn-link" href="https://www.facebook.com/messages/t/999905149368383" target="_blank">
+        💬 Open Messenger Group
+      </a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TOOL 3: INVENTORY -->
+  <div class="tool-card">
+    <div class="tool-header">
+      <div class="tool-icon">📦</div>
+      <div>
+        <div class="tool-name">Inventory / Supplies Update</div>
+        <div class="tool-role">Built into the checklist app — do this every session</div>
+      </div>
+    </div>
+    <div class="tool-body">
+      <p>Before submitting the checklist, count and record the remaining stock of all key supplies. The inventory section is built into the checklist app — you do not need a separate tool.</p>
+
+      <figure class="photo-figure">
+        <img src="https://drive.google.com/thumbnail?id=1DZw1BrwU0kp9TX6NUCZG1dd2Ij2i7EiM&sz=w800"
+             alt="Kitchen full view showing appliances and storage that the cleaner must check during inventory"
+             loading="lazy" width="100%">
+        <figcaption>Check the kitchen cabinets and counter supplies during your inventory update — coffee, dishwashing soap, and sugar sachets are stored here.</figcaption>
+      </figure>
+
+      <p><strong>Items to count each session:</strong><br>
+      Toilet paper rolls, shampoo sachets, conditioner sachets, soap bars, body wash, coffee sachets, sugar sachets, creamer sachets, dishwashing soap, hand soap, laundry detergent, tissue boxes, trash bags, bath towels (usable), face towels (usable).</p>
+      <p>If something is at <strong>2 or below</strong>, add a note in the app AND message Marifel separately so she can restock before the next guest arrives.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- REFERENCE GUIDES -->
+  <p class="sub-head">Reference Guides</p>
+  <div class="card">
+    <div class="card-title">📖 Additional Resources</div>
+    <div class="card-body">These are on your phone for detailed reference any time:</div>
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
+    <a class="btn-link" href="https://cascadereservations-del.github.io/Cascade-Cleaning-Guide/" target="_blank">🧴 Cleaning &amp; Laundry Guide</a>
+    <a class="btn-link" href="https://cascadereservations-del.github.io/Cascade-Manual/" target="_blank">📋 Operations Manual</a>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 4 — STANDARDS
+══════════════════════════════════════════════════════ -->
+<section id="tab-standards" class="tab-panel" role="tabpanel">
+
+  <p class="section-title">The Standards</p>
+  <p class="section-desc">What "5-star" means in practice. These are non-negotiable.</p>
+
+
+  <!-- DON'T MISS THESE -->
+  <div class="callout-dont-miss">
+    <div class="dm-title">⚠️ Don't Miss These — 8 Spots Cleaners Most Often Skip</div>
+    <ol>
+      <li><strong>Under the bed</strong> — dust and forgotten items collect here every stay</li>
+      <li><strong>Behind the toilet</strong> — the base and hinge area are easy to miss</li>
+      <li><strong>Top of the refrigerator</strong> — guests notice if it's dusty</li>
+      <li><strong>Inside kitchen drawers and cabinets</strong> — food debris builds up</li>
+      <li><strong>Hair in the shower drain</strong> — check and clear every single session</li>
+      <li><strong>Fingerprints on the TV screen and remote</strong></li>
+      <li><strong>Light switches and door handles</strong> — high-touch surfaces, often skipped</li>
+      <li><strong>Windowsills and tracks</strong> — dust and dead insects collect here</li>
+    </ol>
+  </div>
+
+  <p style="font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--gold-dk); margin-bottom:12px; margin-top:4px;">The 5 Non-Negotiables</p>
+
+  <!-- NN 1: SMELL -->
+  <div class="nn-item">
+    <div class="nn-num">1</div>
+    <div class="nn-body">
+      <strong class="nn-headline">Zero Bad Smell</strong>
+      <span class="nn-explain">The unit must smell completely fresh when the door opens. Check the sofa, bedroom, bathroom, and trash bins. Use fabric spray on all upholstered surfaces. If a guest smoked or cooked heavily, allow 20+ minutes of full ventilation before spraying.</span>
+      <span class="nn-test">✓ <strong>How to know you passed:</strong> Step outside for 30 seconds. Walk back in. If you smell anything bad, you are not done yet.</span>
+    </div>
+  </div>
+
+
+  <!-- NN 2: BATHROOM -->
+  <div class="nn-item">
+    <div class="nn-num">2</div>
+    <div class="nn-body">
+      <strong class="nn-headline">Bathroom Sparkles</strong>
+      <span class="nn-explain">Chrome polished, no water marks on the mirror, toilet bowl clean inside and out, floor dry. Apply toilet bowl cleaner first and let it wait (soak) for at least 5 minutes before scrubbing. Use a separate cloth for the toilet only — never use the toilet cloth on any other surface.</span>
+      <span class="nn-test">✓ <strong>How to know you passed:</strong> Stand at the bathroom door. Look in. Can you see any water marks, hair, or dirt? If yes, clean it again.</span>
+    </div>
+  </div>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=14C2AxblYuXUEXcQsSAKyR0afOokF5ZHs&sz=w800"
+         alt="Cascade Hideaway bathroom — full view showing the clean, finished state with toilet, sink, and shower"
+         loading="lazy" width="100%">
+    <figcaption><strong>This is the target.</strong> Chrome shining. Mirror clear. Toilet white inside. Floor dry. Towels on the rack. No hair visible anywhere.</figcaption>
+  </figure>
+
+
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1Si_tHhiFThb7Dx1bLnly8FZY_yiOc2ey&sz=w800"
+         alt="Bathroom towel display — towels folded and arranged on the rack as they should appear for guests"
+         loading="lazy" width="100%" style="object-position: left top;">
+    <figcaption>This is how the towels should look when you leave — folded neatly in thirds, hanging on the rack. Both bath and face towels arranged the same way.</figcaption>
+  </figure>
+
+
+  <div class="callout-dont-miss" style="border-color:var(--gold); background:rgba(196,165,100,0.09); margin-top:14px;">
+    <div class="dm-title" style="color:var(--gold-dk);">🚿 Drain Care &amp; Screen Mesh — Do This Every Session</div>
+    <p style="font-size:13px; color:var(--txt2); line-height:1.7; margin-bottom:10px;">Clogged drains are the top maintenance complaint at Cascade Hideaway — and entirely preventable. Hair is always the cause.</p>
+    <ol style="padding-left:18px; font-size:13px; color:var(--txt2); line-height:1.7;">
+      <li style="margin-bottom:7px;"><strong>Remove and clean the drain cover</strong> after every session. Pull out all hair using a tissue or your gloved hand. Do not flush hair — dispose of it in the trash.</li>
+      <li style="margin-bottom:7px;"><strong>Check the drain flow</strong> — pour a small amount of water and watch it drain. If it drains slowly, use the provided drain-clearing tool to pull out any blockage inside.</li>
+      <li style="margin-bottom:7px;"><strong>Replace the screen mesh protector</strong> — this must always be placed over the drain opening before you leave. It catches hair before it enters the pipe. <strong>If the mesh is missing or damaged, report to Marifel before leaving.</strong></li>
+    </ol>
+    <p style="font-size:12px; font-weight:700; color:var(--gold-dk); margin-top:8px;">✓ This is a required checklist item in the Bathroom section of the app.</p>
+  </div>
+
+    <!-- NN 3: BED -->
+  <div class="nn-item">
+    <div class="nn-num">3</div>
+    <div class="nn-body">
+      <strong class="nn-headline">Hotel-Style Bed</strong>
+      <span class="nn-explain">Tight hospital corners. Sheets smooth with no wrinkles. Four pillows: two upright against the headboard, two flat in front. The bed is the centerpiece of the room — if it looks perfect, the whole room feels professional.</span>
+      <span class="nn-test">✓ <strong>How to know you passed:</strong> Press your palm flat on the sheet and slide it. If there are wrinkles, you will feel them. Then look at all 4 corners from the foot of the bed — they should be flat and tight.</span>
+    </div>
+  </div>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1TViBfOld0sR7DmlNorawuI7501lsoVZL&sz=w800"
+         alt="Queen bed full view — showing the target appearance with hospital corners and 4 pillows arranged correctly"
+         loading="lazy" width="100%">
+    <figcaption><strong>This is the target for the bed.</strong> Tight corners, no wrinkles, 4 pillows arranged. The bed should look like this when you leave.</figcaption>
+  </figure>
+
+
+
+  <!-- NN 4: SUPPLIES -->
+  <div class="nn-item">
+    <div class="nn-num">4</div>
+    <div class="nn-body">
+      <strong class="nn-headline">Everything Stocked</strong>
+      <span class="nn-explain">A guest should never have to ask for toilet paper, coffee, shampoo, or a fresh towel. Check every item before leaving. If something is about to run out, flag it in the checklist app and message Marifel — do not wait until it is empty.</span>
+      <span class="nn-test">✓ <strong>How to know you passed:</strong> Open every cabinet and check. If anything is at 2 or below, message Marifel before you leave.</span>
+    </div>
+  </div>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1DZw1BrwU0kp9TX6NUCZG1dd2Ij2i7EiM&sz=w800"
+         alt="Coffee station showing stocked coffee sachets, sugar, creamer, and cups as guests expect to find them"
+         loading="lazy" width="100%">
+    <figcaption>The coffee station must look exactly like this — fully stocked with coffee sachets, sugar, creamer, and cups arranged neatly. A guest who arrives with no coffee will write a review about it.</figcaption>
+  </figure>
+
+  <!-- NN 5: PHOTOS -->
+  <div class="nn-item">
+    <div class="nn-num">5</div>
+    <div class="nn-body">
+      <strong class="nn-headline">Photos Before You Leave</strong>
+      <span class="nn-explain">Four photos — Bed, Bathroom, Kitchen, Living Area — sent to the Messenger group before you walk out. This is your proof of completion. No photos means no confirmation that the unit is ready.</span>
+      <span class="nn-test">✓ <strong>How to know you passed:</strong> Open Messenger. Is the message with 4 attached photos already there? If yes, you are done.</span>
+    </div>
+  </div>
+
+  <!-- QUIZ after Non-Negotiables -->
+  <div class="quiz-card" style="margin-top:6px;">
+    <div class="quiz-q">❓ Which of the 5 non-negotiables is the most common cause of guest complaints?</div>
+    <span class="quiz-reveal" tabindex="0" role="button" onclick="toggleQuiz(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleQuiz(this)}">Tap to reveal answer</span>
+    <div class="quiz-answer"><strong>The smell.</strong> A bad smell at the door is the number one issue in short-term rental complaints. The bathroom is a close second. Both are fixable — but they require a thorough process, not just a quick spray.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOSPITAL CORNERS TUTORIAL -->
+  <details class="collapsible-section">
+  <summary class="collapsible-head">🛏️ Hospital Corners &amp; Pillow Arrangement — Tap to expand</summary>
+  <div class="collapsible-body">
+
+  <div class="callout callout-gold">
+    <strong>"Hospital corners"</strong> is a specific technique that keeps the sheet flat and tight at the corners. Once you learn it, it takes under a minute per corner.
+  </div>
+
+  <div class="card" style="padding:14px 16px;">
+    <div class="card-title">🛏️ Hospital Corners — Step by Step</div>
+    <div style="padding: 0;">
+
+      <div class="hc-step">
+        <div class="hc-num">1</div>
+        <div class="hc-text">
+          <strong>Lay</strong> the flat sheet on the mattress. Center it so there is equal overhang on both sides and the foot.
+          <span class="hc-confirm">✓ You'll know it's right when both sides hang the same length and the sheet reaches the foot edge evenly.</span>
+        </div>
+      </div>
+
+      <div class="hc-step">
+        <div class="hc-num">2</div>
+        <div class="hc-text">
+          <strong>Tuck</strong> the foot end. Push the overhanging sheet firmly under the mattress all the way across the foot.
+          <span class="hc-confirm">✓ You'll know it's right when the sheet is flat across the foot with no gap between sheet and mattress.</span>
+        </div>
+      </div>
+
+      <div class="hc-step">
+        <div class="hc-num">3</div>
+        <div class="hc-text">
+          <strong>Lift</strong> the side overhang of the sheet at one corner to form a 45° triangle pointing toward the head of the bed. Hold this fold against the mattress with your free hand.
+          <span class="hc-confirm">✓ You'll know it's right when the triangle of fabric rests on the mattress and the hanging part drops straight down.</span>
+        </div>
+      </div>
+
+      <div class="hc-step">
+        <div class="hc-num">4</div>
+        <div class="hc-text">
+          <strong>Tuck</strong> the hanging part below your hand straight under the mattress.
+          <span class="hc-confirm">✓ You'll know it's right when nothing hangs below the mattress level on that side of the corner.</span>
+        </div>
+      </div>
+
+      <div class="hc-step">
+        <div class="hc-num">5</div>
+        <div class="hc-text">
+          <strong>Fold</strong> the triangle of fabric still on the mattress straight down and tuck it under. The corner should now be flat and tight.
+          <span class="hc-confirm">✓ You'll know it's right when the corner looks like a sealed envelope — no bulge, no flap, no fold visible.</span>
+        </div>
+      </div>
+
+      <div class="hc-step">
+        <div class="hc-num">6</div>
+        <div class="hc-text">
+          <strong>Repeat</strong> all 4 corners. Then run your hand across the entire surface to smooth wrinkles, pulling the sheet tight before tucking the long sides.
+          <span class="hc-confirm">✓ You'll know it's right when your palm slides smoothly across the whole surface with no wrinkles or bumps.</span>
+        </div>
+      </div>
+
+      <div class="tip-strip" style="margin-top:12px; margin-bottom:4px;">
+        <span class="tip-icon">💡</span>
+        <span><strong>Quick test:</strong> After making the bed, press your palm flat on the surface. If your hand slides without catching on wrinkles, you are done. If not, re-tuck and smooth again.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUIZ after Hospital Corners -->
+  <div class="quiz-card">
+    <div class="quiz-q">❓ After making the bed, how do you quickly check that it is correct?</div>
+    <span class="quiz-reveal" tabindex="0" role="button" onclick="toggleQuiz(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleQuiz(this)}">Tap to reveal answer</span>
+    <div class="quiz-answer"><strong>Press your palm flat on the sheet and slide it.</strong> If there are wrinkles, you will feel them. Then stand at the foot of the bed and look at all 4 corners — they should be flat and tight, with no sheet lifting at the edges.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🛌 Pillow Arrangement</div>
+    <div class="card-body">
+      There are 4 pillows total. Arrange them like this:
+    </div>
+  </div>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1HLiyCQTD52S7scOmYiPdbxyLhkOPy4bs&sz=w800"
+         alt="Bed pillow arrangement close-up showing 2 upright pillows against headboard and 2 flat pillows in front"
+         loading="lazy" width="100%">
+    <figcaption><strong>Back row:</strong> 2 pillows standing upright against the headboard. <strong>Front row:</strong> 2 pillows flat in front, slightly overlapping. Stand at the foot of the bed and check — if it looks balanced, it is correct.</figcaption>
+  </figure>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1IPvwjlLNbjNLNw9sZ4ZJlbvHLrGn-VV9&sz=w800"
+         alt="Sleeping nook and bedroom area showing the full bed setup in context of the room"
+         loading="lazy" width="100%">
+    <figcaption>Step back and look at the bedroom from this angle before you leave. The bed should be the focal point — clean, tight, and perfectly staged.</figcaption>
+  </figure>
+
+  </div></details>
+  <div class="divider"></div>
+
+  <!-- CLEANING SEQUENCE -->
+  <details class="collapsible-section">
+  <summary class="collapsible-head">🔄 Full Cleaning Sequence — Tap to expand</summary>
+  <div class="collapsible-body">
+
+  <div class="callout callout-gold">
+    Always follow this sequence. The order is designed so you do not re-contaminate areas you already cleaned. Vacuuming comes before mopping. Bathroom comes before making the bed.
+  </div>
+
+  <!-- QUIZ before sequence -->
+  <div class="quiz-card">
+    <div class="quiz-q">❓ What do you do FIRST when you walk into the unit — before you touch anything?</div>
+    <span class="quiz-reveal" tabindex="0" role="button" onclick="toggleQuiz(this)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleQuiz(this)}">Tap to reveal answer</span>
+    <div class="quiz-answer"><strong>Open all the windows and the front door first.</strong> Let fresh air flow through the unit for the entire cleaning session. Ventilating first removes odors before you start cleaning, so you are not sealing smells in.</div>
+  </div>
+
+  <div class="seq-group">
+    <div class="seq-group-title">Phase 1 — Arrival (do these first)</div>
+    <ul class="step-list" style="padding:0 4px;">
+      <li><strong>Open</strong> all windows and the front door before touching anything else. Air out the unit for your whole session.</li>
+      <li><strong>Inspect</strong> every room for damage or items left by guests. Take photos of anything unusual before touching it.</li>
+      <li><strong>Strip</strong> all used sheets, pillowcases, and towels. Bag them to contain dirt and odors.</li>
+      <li><strong>Load</strong> the washing machine right away so it runs while you clean everything else.</li>
+      <li><strong>Apply</strong> toilet bowl cleaner and tile cleaner now. Let them wait (soak) for 5–10 minutes while you work elsewhere.</li>
+    </ul>
+  </div>
+
+  <div class="seq-group">
+    <div class="seq-group-title">Phase 2 — Deep Clean</div>
+    <ul class="step-list" style="padding:0 4px;">
+      <li><strong>Clean</strong> the kitchen: wash dishes, degrease the stovetop, wipe all counters, sanitize the sink.</li>
+      <li><strong>Scrub</strong> the bathroom: toilet, sink, shower, chrome fixtures, floor, mirror. The chemicals have now soaked long enough.</li>
+      <li><strong>Dust</strong> from top to bottom — shelves, fridge top, all surfaces. Work from high to low.</li>
+      <li><strong>Sanitize</strong> all high-touch surfaces: remotes, light switches, door handles.</li>
+      <li><strong>Transfer</strong> laundry from wash to dryer.</li>
+    </ul>
+  </div>
+
+  <div class="seq-group">
+    <div class="seq-group-title">Phase 3 — Bed &amp; Restock</div>
+    <ul class="step-list" style="padding:0 4px;">
+      <li><strong>Make</strong> the bed: hospital corners, duvet flat, 4 pillows arranged correctly.</li>
+      <li><strong>Restock</strong> all supplies — toilet paper, coffee, toiletries, towels. Count and record in the checklist app.</li>
+      <li><strong>Vacuum</strong> the whole unit first. Then mop from the farthest corner toward the door.</li>
+    </ul>
+  </div>
+
+  <div class="seq-group">
+    <div class="seq-group-title">Phase 4 — Stage &amp; Submit</div>
+    <ul class="step-list" style="padding:0 4px;">
+      <li><strong>Spray</strong> fabric spray on the sofa and soft surfaces. Close all windows.</li>
+      <li><strong>Stage</strong> the unit: arrange everything as the guest expects to find it.</li>
+      <li><strong>Check</strong> all appliances — see the Appliance Check section below.</li>
+      <li><strong>Walk through</strong> the unit as if you are the arriving guest. Check smell, bed, bathroom, kitchen. Fix anything that does not meet the standard.</li>
+      <li><strong>Submit</strong> the checklist report. Update the supplies count first, then tap Submit.</li>
+      <li><strong>Send</strong> 4 after-photos to Messenger. Then lock the door and leave.</li>
+    </ul>
+  </div>
+
+  </div></details>
+  <div class="divider"></div>
+
+  <!-- APPLIANCE CHECK (7e) -->
+  <details class="collapsible-section">
+  <summary class="collapsible-head">🔌 Appliance Check — Tap to expand</summary>
+  <div class="collapsible-body">
+
+  <div class="callout callout-warn">
+    <strong>Do this before you submit the report.</strong> A broken AC or no WiFi is the most complained-about issue after a guest checks in. Catch it now — not after the guest messages.
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔌 Check Every Appliance</div>
+    <div class="card-body">
+      <strong>1. Air conditioner:</strong> Turn it on for 30 seconds. Make sure it runs and blows cool air. Turn it off when done.<br><br>
+      <strong>2. TV remote:</strong> Press a button. Make sure the remote responds. (Replace batteries if needed — they are in the supply cabinet.)<br><br>
+      <strong>3. WiFi router:</strong> Check that the lights are on and steady. No lights means no WiFi for the guest.<br><br>
+      <strong>4. Power outlets:</strong> Plug your phone into one wall outlet briefly. Confirm it is charging.<br><br>
+      <strong>5. Report any failure:</strong> If any appliance is not working, report to Marifel before marking the unit as ready. Do not close the unit with a broken AC or no WiFi.
+    </div>
+  </div>
+
+  </div></details>
+  <div class="divider"></div>
+
+  <!-- SMELL TROUBLESHOOTING — full explanation (Smell Rule 1st appearance) -->
+  <details class="collapsible-section">
+  <summary class="collapsible-head">🌬️ Smell Troubleshooting — Tap to expand</summary>
+  <div class="collapsible-body">
+
+  <div class="callout callout-warn" style="margin-top:4px;">
+    <strong>Odor Rule:</strong> After an hour of cleaning, your nose adapts and you may not notice smells anymore. Always do your final nose check at the front door — step outside for 30 seconds, then walk back in. If you are unsure, message Marifel before marking the unit as ready.
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌬️ When the Smell Won't Go Away</div>
+    <div class="card-body">
+      Some stays leave stronger odors. If standard ventilation and fabric spray are not enough:<br><br>
+      <strong>Step 1:</strong> Find the source — is it the sofa, the bedding, the bathroom, or a trash area?<br><br>
+      <strong>Step 2:</strong> Open every window and the front door. Run the air purifier on HIGH.<br><br>
+      <strong>Step 3:</strong> Re-wash any fabric items (sofa throw, pillowcases, mattress protector) that are absorbing the smell.<br><br>
+      <strong>Step 4:</strong> Apply fabric spray generously to the sofa and let it dry for 15–20 minutes with airflow before closing the unit.<br><br>
+      <strong>Step 5:</strong> If the smell is still noticeable after 30 minutes of ventilation, <strong>message Marifel before marking the unit as ready.</strong> Do not mark the unit as ready if it does not pass the smell test.
+    </div>
+  </div>
+
+  </div></details>
+  <div class="divider"></div>
+
+  <!-- LAUNDRY -->
+  <details class="collapsible-section">
+  <summary class="collapsible-head">🧺 Laundry Quick Reference — Tap to expand</summary>
+  <div class="collapsible-body">
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1J_aUg97IbA9KDqZ5cMC9SZv660ehk9uj&sz=w800"
+         alt="In-unit washing machine and laundry area inside the Cascade Hideaway unit"
+         loading="lazy" width="100%">
+    <figcaption>The in-unit washing machine. Load it as the first thing you do after inspection — so laundry runs while you clean.</figcaption>
+  </figure>
+
+  <div class="card">
+    <div class="card-title">🧺 Laundry Rules</div>
+    <div class="card-body">
+      ✦ &nbsp;<strong>No fabric conditioner.</strong> It reduces absorbency and causes buildup. Use Laundry Finishing Spray after drying instead.<br><br>
+      ✦ &nbsp;<strong>Detergent:</strong> Surf Professional or Surf Matic. About 2 tablespoons liquid or 1–1.5 scoops powder per standard load.<br><br>
+      ✦ &nbsp;<strong>Whites only:</strong> Add Oxygen Bleach (Zonrox Oxy) to brighten sheets and white towels. Do not use on colored fabric.<br><br>
+      ✦ &nbsp;<strong>Towels separate from sheets.</strong> Always. Mixed loads lead to pilling and uneven wash results.<br><br>
+      ✦ &nbsp;<strong>Dry immediately</strong> after washing — do not leave wet linens sitting. Mildew smell develops within hours and is very hard to remove.
+    </div>
+  </div>
+
+  </div></details>
+  <div class="divider"></div>
+
+  <!-- STAGING SPEC -->
+  <details class="collapsible-section">
+  <summary class="collapsible-head">🪞 Staging — How the Unit Looks When You Leave — Tap to expand</summary>
+  <div class="collapsible-body">
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=11LmQo2qjP4O_PtOsDOWE3ASmBgweiQ-Z&sz=w800"
+         alt="Sofa and 55-inch Samsung Smart TV showing the staged living area appearance"
+         loading="lazy" width="100%">
+    <figcaption>The sofa and TV should look like this when you leave — sofa cushions arranged, TV off, remote on the table, no items left out.</figcaption>
+  </figure>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1kPOhi6JC-UcYHYIBh2MaF7jMU-BTwqDn&sz=w800"
+         alt="Living area open concept view showing the full room as it should appear on departure"
+         loading="lazy" width="100%">
+    <figcaption>The open-concept living area from the entry angle. This is how it should look when you leave — everything in its place, no clutter.</figcaption>
+  </figure>
+
+  <figure class="photo-figure">
+    <img src="https://drive.google.com/thumbnail?id=1roxQNJjOWoqmd9AG-JdYKRon4zbwunOE&sz=w800"
+         alt="Kitchenette overview showing the clean counters, appliances, and organized storage"
+         loading="lazy" width="100%">
+    <figcaption>The kitchenette should look like this — counters completely clear, everything wiped down, all appliances in their correct position.</figcaption>
+  </figure>
+
+  <div class="card">
+    <div class="card-title">👗 Wardrobe &amp; Storage Area</div>
+    <div class="card-body">
+      Hangers should be in place and evenly spaced. The <strong>cloth steamer</strong> must be stored neatly in the wardrobe area — not left on the desk or bed. Keep the area organized exactly as a guest found it.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 Power &amp; Air Settings</div>
+    <div class="card-body">
+      ✦ &nbsp;All lights off<br>
+      ✦ &nbsp;AC off<br>
+      ✦ &nbsp;TV off<br>
+      ✦ &nbsp;Air purifier set to <strong>LOW</strong> (not off — it runs on LOW for the guest's arrival)<br>
+      ✦ &nbsp;Blinds and curtains in the neutral position — not fully open or fully closed<br>
+      ✦ &nbsp;Key card on the table with the TV and AC remotes, on its Cascade Hideaway keychain
+    </div>
+  </div>
+
+  </div></details>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 5 — QUICK CARD
+══════════════════════════════════════════════════════ -->
+<section id="tab-quickcard" class="tab-panel" role="tabpanel">
+
+  <p class="section-title">Quick Card</p>
+  <p class="section-desc">Mid-turnover reference. Everything you need in one screen.</p>
+
+  <!-- 5-SECOND REMINDER -->
+  <div class="qc-reminder">
+    <div class="qc-reminder-title">⭐ 5-Second Check — Remember These Always</div>
+    <div class="qc-reminder-row"><div class="qc-reminder-num">1</div><span><strong>No bad smell</strong> at the door — step outside, walk back in, no odor = pass</span></div>
+    <div class="qc-reminder-row"><div class="qc-reminder-num">2</div><span><strong>Bathroom</strong> — no marks, chrome shiny, floor dry, no hair</span></div>
+    <div class="qc-reminder-row"><div class="qc-reminder-num">3</div><span><strong>Bed</strong> — tight corners, no wrinkles, 4 pillows right</span></div>
+    <div class="qc-reminder-row"><div class="qc-reminder-num">4</div><span><strong>Everything stocked</strong> — nothing empty when the guest arrives</span></div>
+    <div class="qc-reminder-row"><div class="qc-reminder-num">5</div><span><strong>4 photos sent</strong> to Messenger before you leave</span></div>
+  </div>
+
+  <div class="callout callout-gold">
+    <strong>This tab is for when you are already cleaning.</strong> It is a condensed version of everything in the Standards tab. Read the full guide first — then use this card during every turnover.
+  </div>
+
+  <!-- BEFORE YOU LEAVE PHOTO GRID -->
+  <div class="qc-section">
+    <div class="qc-head">📸 Before You Leave — This Is What Each Room Must Look Like</div>
+    <div class="qc-body">
+      <div class="before-leave-grid">
+        <figure class="before-leave-item">
+          <img src="https://drive.google.com/thumbnail?id=1TViBfOld0sR7DmlNorawuI7501lsoVZL&sz=w800"
+               alt="Bed — target appearance with hospital corners and 4 pillows" loading="lazy">
+          <figcaption>🛏️ Bed — tight corners, 4 pillows, no wrinkles</figcaption>
+        </figure>
+        <figure class="before-leave-item">
+          <img src="https://drive.google.com/thumbnail?id=1Si_tHhiFThb7Dx1bLnly8FZY_yiOc2ey&sz=w800"
+               alt="Bathroom — towels on rack, clean and dry" loading="lazy" style="object-position: left top;">
+          <figcaption>🚿 Bathroom — towels on rack, floor dry</figcaption>
+        </figure>
+        <figure class="before-leave-item">
+          <img src="https://drive.google.com/thumbnail?id=1roxQNJjOWoqmd9AG-JdYKRon4zbwunOE&sz=w800"
+               alt="Kitchen — clear counters, clean sink" loading="lazy">
+          <figcaption>🍽️ Kitchen — counters clear, sink dry</figcaption>
+        </figure>
+        <figure class="before-leave-item">
+          <img src="https://drive.google.com/thumbnail?id=11LmQo2qjP4O_PtOsDOWE3ASmBgweiQ-Z&sz=w800"
+               alt="Living area — sofa arranged, TV off, no clutter" loading="lazy">
+          <figcaption>🛋️ Living area — sofa neat, TV off</figcaption>
+        </figure>
+      </div>
+      <p style="font-size:12px; color:var(--txt3); margin-top:4px;">Take your 4 after-photos from angles similar to these. Each photo should look like a hotel listing shot.</p>
+    </div>
+  </div>
+
+  <!-- CLEANING SEQUENCE condensed -->
+  <details class="collapsible-qc">
+    <summary class="qc-head">🔄 Cleaning Sequence</summary>
+    <div class="qc-body">
+      <div class="qc-seq-item"><div class="qc-seq-num">1</div><span><strong>Open</strong> all windows and the front door first</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">2</div><span><strong>Inspect &amp; photo</strong> — damage check before touching anything</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">3</div><span><strong>Strip linens</strong> — bag and remove all used sheets &amp; towels</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">4</div><span><strong>Load laundry</strong> — start immediately</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">5</div><span><strong>Apply bathroom chemicals</strong> — let wait 5–10 min</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">6</div><span><strong>Clean kitchen</strong> — dishes, stovetop, counters, sink</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">7</div><span><strong>Scrub bathroom</strong> — toilet, sink, shower, chrome, floor, mirror</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">8</div><span><strong>Dust &amp; wipe</strong> — top to bottom; sanitize remotes, switches, handles</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">9</div><span><strong>Transfer laundry</strong> — wash to dryer</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">10</div><span><strong>Make bed</strong> — hospital corners, 4 pillows</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">11</div><span><strong>Restock</strong> — all supplies topped up; count &amp; record in app</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">12</div><span><strong>Vacuum → mop</strong> — vacuum first, mop toward the door</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">13</div><span><strong>Spray &amp; stage</strong> — fabric spray, close windows, arrange unit</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">14</div><span><strong>Appliance check</strong> — AC, TV remote, WiFi router, power outlets</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">15</div><span><strong>Final nose check</strong> — step outside, walk back in</span></div>
+      <div class="qc-seq-item"><div class="qc-seq-num">16</div><span><strong>Submit report &amp; send 4 photos</strong> before leaving</span></div>
+    </div>
+  </details>
+
+  <!-- SMELL RULE condensed (2nd appearance) -->
+  <details class="collapsible-qc">
+    <summary class="qc-head">👃 Smell Rule</summary>
+    <div class="qc-body">
+      <p style="font-size:13px; color:var(--txt2); margin-bottom:6px;">Your nose adapts after 60 minutes of cleaning. You will stop noticing smells.</p>
+      <p style="font-size:13px; color:var(--txt2); margin-bottom:0;"><strong>Always:</strong> Step outside for 30 seconds, then walk back in. If you smell anything bad, you are not done. Do not mark the unit as ready until it passes the smell test at the front door.</p>
+    </div>
+  </details>
+
+  <!-- 4 REQUIRED AFTER-PHOTOS (3rd appearance) -->
+  <details class="collapsible-qc">
+    <summary class="qc-head">📸 4 Required After-Photos</summary>
+    <div class="qc-body">
+      <div class="qc-nn-row"><div class="qc-nn-num">🛏</div><span>Bed — full view, both sides, all 4 pillows</span></div>
+      <div class="qc-nn-row"><div class="qc-nn-num">🚿</div><span>Bathroom — toilet, sink, and shower in one frame</span></div>
+      <div class="qc-nn-row"><div class="qc-nn-num">🍳</div><span>Kitchen — counters clear, sink clean</span></div>
+      <div class="qc-nn-row"><div class="qc-nn-num">🛋</div><span>Living Area — wide shot from door or corner</span></div>
+    </div>
+  </details>
+
+  <!-- IF/THEN -->
+  <details class="collapsible-qc" open>
+    <summary class="qc-head">🚨 If This Happens → Do This</summary>
+    <div class="qc-body">
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> You find damage when you arrive<br>
+        <span class="then-lbl">Then:</span> Take a photo first. Do not touch it. Message Marifel right away with the photos.
+      </div>
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> The smell will not go away<br>
+        <span class="then-lbl">Then:</span> Full ventilation 20+ min, all windows open → re-spray → nose check at the door → message Marifel if still not passing.
+      </div>
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> A supply has run out or is missing<br>
+        <span class="then-lbl">Then:</span> Note it in the checklist app. Message Marifel separately. Do not use a substitute without her approval.
+      </div>
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> An appliance is not working<br>
+        <span class="then-lbl">Then:</span> Take a photo. Do not try to fix it yourself. Report it to Marifel before you leave.
+      </div>
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> You found something a guest left behind<br>
+        <span class="then-lbl">Then:</span> Photo where you found it. Put it in the lost-and-found spot. Message Marifel right away.
+      </div>
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> You are behind schedule<br>
+        <span class="then-lbl">Then:</span> Message Marifel as early as possible — not when you are already past the deadline.
+      </div>
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> The checklist app will not submit<br>
+        <span class="then-lbl">Then:</span> Screenshot the error. Message Marifel before you leave the unit.
+      </div>
+      <div class="if-then-row">
+        <span class="if-lbl">If:</span> There is a fire or flooding<br>
+        <span class="then-lbl">Then:</span> Leave right away. Call 911 or 160 (BFP). Then message Marifel.
+      </div>
+    </div>
+  </details>
+
+  <!-- QUICK CONTACTS -->
+  <details class="collapsible-qc">
+    <summary class="qc-head">📞 Quick Contacts</summary>
+    <div class="qc-body">
+      <div class="qc-nn-row" style="align-items:flex-start; flex-direction:column; gap:6px; padding: 10px 0;">
+        <span style="font-weight:700; color:var(--mahogany);">Marifel — Operations In-Charge</span>
+        <a class="btn-link" href="https://www.facebook.com/messages/t/999905149368383" target="_blank" style="margin-top:0; font-size:12px; padding:8px 14px;">💬 Message on Messenger</a>
+      </div>
+      <div class="qc-nn-row" style="align-items:flex-start; flex-direction:column; gap:4px; padding: 8px 0; border-top:1px solid rgba(28,16,6,0.06);">
+        <span style="font-weight:700; color:var(--mahogany);">Management (urgent only)</span>
+        <span style="font-size:12.5px; color:var(--txt2);">cascadereservations@gmail.com</span>
+      </div>
+      <div class="qc-nn-row" style="align-items:flex-start; flex-direction:column; gap:4px; padding: 8px 0 0; border-top:1px solid rgba(28,16,6,0.06);">
+        <span style="font-weight:700; color:var(--danger);">Emergency</span>
+        <span style="font-size:13px; color:var(--txt2);">📞 <strong>911</strong> &nbsp;·&nbsp; 📞 <strong>160</strong> (BFP Fire) &nbsp;·&nbsp; 📞 <strong>09985987207</strong> (Police)</span>
+      </div>
+    </div>
+  </details>
+
+  <!-- STAGING CHECKLIST -->
+  <details class="collapsible-qc">
+    <summary class="qc-head">🚪 How the Unit Looks When You Leave</summary>
+    <div class="qc-body">
+      <div class="staging-grid" style="margin-top:4px;">
+        <div class="staging-item"><div class="s-icon">🛏️</div><div class="s-label">Bed</div><div class="s-spec">Hospital corners. 4 pillows arranged. No wrinkles.</div></div>
+        <div class="staging-item"><div class="s-icon">🚿</div><div class="s-label">Bathroom</div><div class="s-spec">Towels on rack, folded in thirds. Fresh TP out.</div></div>
+        <div class="staging-item"><div class="s-icon">🍽️</div><div class="s-label">Kitchen</div><div class="s-spec">Counters clear. Sink dry. Appliances wiped.</div></div>
+        <div class="staging-item"><div class="s-icon">🌬️</div><div class="s-label">Air</div><div class="s-spec">Windows closed. Air purifier on LOW. Fabric spray done.</div></div>
+        <div class="staging-item"><div class="s-icon">💡</div><div class="s-label">Power</div><div class="s-spec">All lights off. AC off. TV off. Fan off.</div></div>
+        <div class="staging-item"><div class="s-icon">🔒</div><div class="s-label">Security</div><div class="s-spec">Key card on table. Door locked. Steamer stored.</div></div>
+      </div>
+    </div>
+  </details>
+
+  <div class="callout callout-gold">
+    <strong>Last thing before leaving:</strong> Stand at the front door and do one final nose check. Step outside for 30 seconds, then walk back in as if you are the arriving guest. Does it smell fresh? Does the bed look clean? Does the bathroom look ready? If yes — you are done.
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 6 — TRAINING TRACK
+══════════════════════════════════════════════════════ -->
+<section id="tab-training" class="tab-panel" role="tabpanel">
+
+  <p class="section-title">Training Track</p>
+  <p class="section-desc">Three stages before independent operation. Marifel signs off at each stage.</p>
+
+    <div class="progress-text">
+      <div class="big" id="stages-complete-label">0 / 3</div>
+      <div class="sm" id="stages-complete-desc">Stages signed off by Marifel</div>
+    </div>
+  </div>
+
+  <div class="callout callout-gold" style="margin-bottom:20px;">
+    <strong>How this works:</strong> You go through three stages with Marifel. Each stage has clear expectations. At the end of each, Marifel enters the sign-off code to unlock the next stage. You are cleared for independent work only after Stage 3 is signed off.
+  </div>
+
+  <!-- ── STAGE 1 ── -->
+  <div class="stage-card" id="stage-card-1">
+    <div class="stage-head">
+      <div class="stage-num">1</div>
+      <div class="stage-label">
+        <div class="stage-name">Shadow &amp; Observe</div>
+        <div class="stage-day">Day 1 &nbsp;·&nbsp; Marifel leads, you watch</div>
+      </div>
+      <div class="stage-status" id="stage-status-1"><span class="badge badge-warn">Pending</span></div>
+    </div>
+    <div class="stage-body">
+      <h4>Your Objective</h4>
+      <p style="font-size:13px; color:var(--txt2); margin-bottom:10px;">Watch a complete turnover from start to finish. Your only job today is to pay close attention and ask questions. <strong>Do not clean — watch.</strong></p>
+
+      <h4>What to Focus On</h4>
+      <ul class="check-list">
+        <li>The exact sequence Marifel follows — in what order does she do things?</li>
+        <li>Where every supply and tool is stored inside the unit</li>
+        <li>How the bed is made — the exact technique for hospital corners</li>
+        <li>How the bathroom is cleaned — the wait time, the tools, the polish</li>
+        <li>How she uses the Checklist App on her phone</li>
+      </ul>
+
+      <h4>Questions to Ask Marifel Today</h4>
+      <ul class="check-list">
+        <li>What is the biggest mistake a new cleaner usually makes?</li>
+        <li>What does she always check last before walking out?</li>
+        <li>When should you stop and call her instead of proceeding on your own?</li>
+        <li>Where is the lost-and-found storage spot in the unit?</li>
+        <li>What is the exact pillow arrangement she expects?</li>
+      </ul>
+
+      <div class="pass-box">
+        <div class="pass-box-title">Marifel Sign-off Criteria — Stage 1</div>
+        <ul>
+          <li>You observed the complete turnover from entry to photo submission</li>
+          <li>You asked questions and can describe the basic sequence in order</li>
+          <li>You know where all supplies and tools are stored in the unit</li>
+          <li>You can describe what "hotel-style" means for the bed and bathroom</li>
+        </ul>
+      </div>
+
+      <div class="stage-encourage">
+        Watching carefully is harder than it looks. You now know the full sequence — that's the foundation everything else is built on.
+      </div>
+
+      <div class="signoff-area">
+        <div class="signoff-label">Supervisor Sign-off — Stage 1</div>
+        <div id="signoff-confirmed-1" class="signoff-confirmed" style="display:none;">
+          ✅ &nbsp;Signed off by Marifel — <span id="signoff-date-1"></span>
+        </div>
+        <div id="signoff-form-1" class="signoff-form">
+          <input type="password" class="signoff-input" id="signoff-input-1" placeholder="Enter supervisor code" autocomplete="off">
+          <button class="btn-signoff" onclick="confirmSignoff(1)">Sign Off</button>
+        </div>
+        <div class="signoff-error" id="signoff-error-1">Incorrect code. Please try again.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STAGE 2 ── -->
+  <div class="stage-card" id="stage-card-2">
+    <div class="stage-head">
+      <div class="stage-num">2</div>
+      <div class="stage-label">
+        <div class="stage-name">Supervised Turnover</div>
+        <div class="stage-day">Day 2 &nbsp;·&nbsp; You clean, Marifel checks</div>
+      </div>
+      <div class="stage-status" id="stage-status-2"><span class="badge badge-warn">Pending</span></div>
+    </div>
+    <div class="stage-body">
+      <h4>Your Objective</h4>
+      <p style="font-size:13px; color:var(--txt2); margin-bottom:10px;">You run the full turnover from start to finish. Marifel is present but does not help unless you ask. At the end, she inspects everything before you submit the report.</p>
+
+      <h4>Your Responsibilities Today</h4>
+      <ul class="check-list">
+        <li>Follow the full cleaning sequence without being prompted — use the Quick Card if you need a reminder</li>
+        <li>Open and use the <strong>Checklist App</strong> on your phone from arrival to submission</li>
+        <li>Make the bed independently — hospital corners, correct pillow arrangement</li>
+        <li>Clean and polish the bathroom to 5-star standard</li>
+        <li>Restock all supplies and update inventory in the checklist app</li>
+      </ul>
+
+      <h4>What Marifel Will Check <span class="repeat-badge">Smell &amp; Photo Rule</span></h4>
+      <ul class="check-list">
+        <li><strong>Smell</strong> — does the unit pass a fresh-nose test at the door?</li>
+        <li><strong>Bathroom</strong> — chrome polished, floor dry, toilet clean inside and out, mirror streak-free, no hair</li>
+        <li><strong>Bed</strong> — tight corners, no wrinkles, pillows correctly arranged</li>
+        <li><strong>High-touch spots</strong> — remotes, switches, door handles sanitized</li>
+        <li><strong>Under and behind</strong> — under the bed, behind the toilet, top of the refrigerator</li>
+        <li><strong>4 after-photos</strong> — sent to Messenger before you leave</li>
+        <li><strong>Checklist App</strong> — fully completed and submitted with supplies updated</li>
+      </ul>
+
+      <div class="pass-box">
+        <div class="pass-box-title">Marifel Sign-off Criteria — Stage 2</div>
+        <ul>
+          <li>Full turnover completed without being prompted</li>
+          <li>Bathroom meets 5-star standard — no marks, chrome polished, floor dry</li>
+          <li>Bed made correctly — no correction needed from Marifel</li>
+          <li>All supplies restocked and inventory updated in the checklist app</li>
+          <li>Report submitted and 4 photos sent before leaving</li>
+          <li>Unit passes the smell test at the door</li>
+        </ul>
+      </div>
+
+      <div class="stage-encourage">
+        You just ran a complete turnover on your own. That is the hardest part. Solo work is the same thing, just without the audience.
+      </div>
+
+      <div class="signoff-area">
+        <div class="signoff-label">Supervisor Sign-off — Stage 2</div>
+        <div id="signoff-confirmed-2" class="signoff-confirmed" style="display:none;">
+          ✅ &nbsp;Signed off by Marifel — <span id="signoff-date-2"></span>
+        </div>
+        <div id="signoff-form-2" class="signoff-form">
+          <input type="password" class="signoff-input" id="signoff-input-2" placeholder="Enter supervisor code" autocomplete="off">
+          <button class="btn-signoff" onclick="confirmSignoff(2)">Sign Off</button>
+        </div>
+        <div class="signoff-error" id="signoff-error-2">Incorrect code. Please try again.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STAGE 3 ── -->
+  <div class="stage-card" id="stage-card-3">
+    <div class="stage-head">
+      <div class="stage-num">3</div>
+      <div class="stage-label">
+        <div class="stage-name">Independent Operation</div>
+        <div class="stage-day">Day 3+ &nbsp;·&nbsp; Solo with photo quality check</div>
+      </div>
+      <div class="stage-status" id="stage-status-3"><span class="badge badge-warn">Pending</span></div>
+    </div>
+    <div class="stage-body">
+      <h4>Your Objective</h4>
+      <p style="font-size:13px; color:var(--txt2); margin-bottom:10px;">You are now responsible for the full turnover on your own. Marifel will review your after-photos via Messenger after each session. You are cleared for solo work once this stage is signed off.</p>
+
+      <h4>Your Independent Responsibilities</h4>
+      <ul class="check-list">
+        <li>Run every turnover to the same standard as your supervised session</li>
+        <li>Submit the <strong>Checklist App</strong> report after every single session — no exceptions</li>
+        <li>Send all 4 after-photos to the Messenger group before leaving the unit</li>
+        <li>Update the supplies inventory every session</li>
+        <li>Message Marifel right away if you find damage, a smell you cannot resolve, or anything unusual</li>
+      </ul>
+
+      <h4>Handling Issues Alone</h4>
+      <ul class="check-list">
+        <li><strong>Damage found:</strong> Photo first, do not touch, message Marifel with photos right away</li>
+        <li><strong>Smell won't go away:</strong> Full ventilation 20+ min, double fabric spray, air purifier on HIGH — if still unresolved, message Marifel before marking unit as ready</li>
+        <li><strong>Supply missing:</strong> Note in app + message Marifel — do not substitute without approval</li>
+        <li><strong>Appliance not working:</strong> Do not attempt to fix — photograph and report to Marifel</li>
+        <li><strong>Cannot finish on time:</strong> Tell Marifel early — not when you are already late</li>
+      </ul>
+
+      <div class="pass-box">
+        <div class="pass-box-title">Marifel Sign-off Criteria — Cleared for Solo Work</div>
+        <ul>
+          <li>At least one independent turnover completed without issues</li>
+          <li>After-photos reviewed by Marifel — standard meets or exceeds Stage 2</li>
+          <li>Checklist report submitted correctly with supplies updated</li>
+          <li>Demonstrated ability to identify and communicate issues proactively</li>
+        </ul>
+      </div>
+
+      <div class="stage-encourage">
+        You're cleared. The 5-star reviews that come in after your sessions are partly yours.
+      </div>
+
+      <div class="callout callout-green" style="margin-top:12px;">
+        <strong>You're cleared for solo work.</strong> But this guide stays on your phone — it is not something you read once and forget. The Quick Card is your in-turnover reference. The Standards tab is what Marifel checks your work against. Check back whenever you are unsure. Great cleaners keep checking.
+      </div>
+
+      <div class="signoff-area">
+        <div class="signoff-label">Supervisor Sign-off — Stage 3 (Cleared for Independent Work)</div>
+        <div id="signoff-confirmed-3" class="signoff-confirmed" style="display:none;">
+          ✅ &nbsp;Cleared for independent work — <span id="signoff-date-3"></span>
+        </div>
+        <div id="signoff-form-3" class="signoff-form">
+          <input type="password" class="signoff-input" id="signoff-input-3" placeholder="Enter supervisor code" autocomplete="off">
+          <button class="btn-signoff" onclick="confirmSignoff(3)">Sign Off &amp; Clear</button>
+        </div>
+        <div class="signoff-error" id="signoff-error-3">Incorrect code. Please try again.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-gold" style="margin-top:4px;">
+    <strong>Supervisor code:</strong> Set by Marifel. The default code is <strong>cascade</strong> — update the <code style="background:rgba(28,16,6,0.08); padding:1px 5px; border-radius:4px; font-size:12px;">SIGNOFF_CODE</code> constant at the top of the page source before deploying.
+  </div>
+
+</section>
+
+</main>
+
+<script>
+// ── CONSTANTS ────────────────────────────────────────────────
+const SIGNOFF_CODE  = 'cascade';           // Change this before deploying
+const SIGNOFF_KEY   = 'ch_signoff_stages'; // localStorage key for signoffs
+const VISITED_KEY   = 'ch_tabs_visited';   // localStorage key for visited tabs
+const HINT_KEY      = 'ch_swipe_hint_shown'; // localStorage key for swipe hint
+
+// Ordered tab list — used for swipe navigation
+const TAB_ORDER = ['welcome', 'before', 'tools', 'standards', 'quickcard', 'training'];
+
+// ── STORAGE HELPERS ───────────────────────────────────────────
+function loadSignoffs() {
+  try { return JSON.parse(localStorage.getItem(SIGNOFF_KEY)) || {}; } catch { return {}; }
+}
+function saveSignoffs(data) {
+  try { localStorage.setItem(SIGNOFF_KEY, JSON.stringify(data)); } catch {}
+}
+function getVisitedTabs() {
+  try { return JSON.parse(localStorage.getItem(VISITED_KEY)) || []; } catch { return []; }
+}
+function saveVisitedTabs(data) {
+  try { localStorage.setItem(VISITED_KEY, JSON.stringify(data)); } catch {}
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────
+var TAB_THEMES = {
+  welcome:'heritage', standards:'heritage',
+  tools:'executive', quickcard:'executive',
+  before:'organic', training:'organic'
+};
+
+function applyTheme(tabId) {
+  var t = TAB_THEMES[tabId] || 'heritage';
+  document.body.className = document.body.className.replace(/\btheme-\S+/g,'').trim();
+  document.body.classList.add('theme-' + t);
+}
+
+function switchTab(tabId, fromSwipe) {
+  if (fromSwipe) dismissSwipeHint();
+
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
+
+  var panel = document.getElementById('tab-' + tabId);
+  if (panel) panel.classList.add('active');
+  var btn = document.querySelector('[data-tab="' + tabId + '"]');
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    btn.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  }
+
+  applyTheme(tabId);
+
+  // Track visited tabs
+  var visited = getVisitedTabs();
+  if (visited.indexOf(tabId) === -1) {
+    visited.push(tabId);
+    saveVisitedTabs(visited);
+  }
+  updateProgressUI(tabId, visited);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── PROGRESS UI (dots + flow pills) ──────────────────────────
+function updateProgressUI(currentTab, visited) {
+  // Update tab dots
+  document.querySelectorAll('.tab-dot').forEach(function(dot) {
+    var dotTab = dot.getAttribute('data-dot');
+    if (dotTab && visited.indexOf(dotTab) !== -1) {
+      dot.classList.add('visited');
+    }
+  });
+
+  // Update dot label
+  var dotLabel = document.getElementById('dot-label');
+  if (dotLabel) {
+    var count = visited.length;
+    dotLabel.textContent = count >= 6
+      ? 'You have read all 6 sections. You are ready.'
+      : 'You have read ' + count + ' of 6 sections';
+  }
+
+  // Update flow pills
+  document.querySelectorAll('.flow-pill').forEach(function(pill) {
+    var pillTab = pill.getAttribute('data-tab');
+    pill.classList.remove('active', 'visited');
+    if (pillTab === currentTab) {
+      pill.classList.add('active');
+    } else if (pillTab && visited.indexOf(pillTab) !== -1) {
+      pill.classList.add('visited');
+    }
+  });
+}
+
+// ── QUIZ REVEAL ───────────────────────────────────────────────
+function toggleQuiz(el) {
+  var answer = el.nextElementSibling;
+  var isVisible = answer.classList.contains('visible');
+  answer.classList.toggle('visible', !isVisible);
+  el.textContent = isVisible ? 'Tap to reveal answer' : 'Hide answer';
+}
+
+// ── SIGN-OFF ──────────────────────────────────────────────────
+function confirmSignoff(stage) {
+  var input = document.getElementById('signoff-input-' + stage);
+  var errEl = document.getElementById('signoff-error-' + stage);
+  errEl.style.display = 'none';
+
+  if (input.value.trim().toLowerCase() !== SIGNOFF_CODE.toLowerCase()) {
+    errEl.style.display = 'block';
+    input.value = '';
+    input.focus();
+    return;
+  }
+
+  var dateStr = new Date().toLocaleDateString('en-PH', {
+    year: 'numeric', month: 'long', day: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+  var data = loadSignoffs();
+  data[stage] = dateStr;
+  saveSignoffs(data);
+  applySignoffs(data);
+}
+
+function applySignoffs(data) {
+  var completed = 0;
+  [1, 2, 3].forEach(function(s) {
+    var dateStr = data[s];
+    var card    = document.getElementById('stage-card-' + s);
+    var statEl  = document.getElementById('stage-status-' + s);
+    var formEl  = document.getElementById('signoff-form-' + s);
+    var confEl  = document.getElementById('signoff-confirmed-' + s);
+    var dateEl  = document.getElementById('signoff-date-' + s);
+
+    if (dateStr) {
+      completed++;
+      card.classList.add('completed');
+      card.classList.remove('stage-locked');
+      statEl.innerHTML = '<span class="badge badge-green">✓ Signed Off</span>';
+      formEl.style.display = 'none';
+      confEl.style.display = 'flex';
+      dateEl.textContent = dateStr;
+      var numEl = card.querySelector('.stage-num');
+      if (numEl) numEl.textContent = '✓';
+    }
+  });
+
+  // Stage locking: lock Stage 2 until Stage 1 signed off; Stage 3 until Stage 2 signed off
+  var s2Card = document.getElementById('stage-card-2');
+  var s3Card = document.getElementById('stage-card-3');
+
+  if (!data[1]) {
+    // Stage 1 not signed off — dim Stage 2
+    s2Card.classList.add('stage-locked');
+    s2Card.querySelectorAll('.signoff-input, .btn-signoff').forEach(function(el) {
+      el.style.pointerEvents = 'none';
+    });
+  } else {
+    s2Card.classList.remove('stage-locked');
+    s2Card.querySelectorAll('.signoff-input, .btn-signoff').forEach(function(el) {
+      el.style.pointerEvents = '';
+    });
+  }
+
+  if (!data[2]) {
+    // Stage 2 not signed off — dim Stage 3
+    s3Card.classList.add('stage-locked');
+    s3Card.querySelectorAll('.signoff-input, .btn-signoff').forEach(function(el) {
+      el.style.pointerEvents = 'none';
+    });
+  } else {
+    s3Card.classList.remove('stage-locked');
+    s3Card.querySelectorAll('.signoff-input, .btn-signoff').forEach(function(el) {
+      el.style.pointerEvents = '';
+    });
+  }
+
+  // Progress ring: circumference = 2π × 18 ≈ 113.1
+  var circumference = 113;
+  var offsets = [113, 75.4, 37.7, 0]; // 0/3, 1/3, 2/3, 3/3
+  var ringEl = document.getElementById('ring-fill');
+  if (ringEl) ringEl.style.strokeDashoffset = offsets[completed];
+
+  var labelEl = document.getElementById('stages-complete-label');
+  var descEl  = document.getElementById('stages-complete-desc');
+  if (labelEl) labelEl.textContent = completed + ' / 3';
+  if (descEl)  descEl.textContent  = completed === 3
+    ? 'All stages complete — cleared for solo work ✦'
+    : 'Stages signed off by Marifel';
+}
+
+// ── SWIPE HINT ────────────────────────────────────────────────
+var _swipeHintTimer = null;
+
+function initSwipeHint() {
+  if (localStorage.getItem(HINT_KEY)) return; // Already shown before — never show again
+  var hint = document.getElementById('swipe-hint');
+  if (!hint) return;
+  hint.classList.add('visible');
+  _swipeHintTimer = setTimeout(dismissSwipeHint, 3000);
+}
+
+function dismissSwipeHint() {
+  if (_swipeHintTimer) { clearTimeout(_swipeHintTimer); _swipeHintTimer = null; }
+  var hint = document.getElementById('swipe-hint');
+  if (hint) hint.classList.remove('visible');
+  try { localStorage.setItem(HINT_KEY, '1'); } catch {}
+}
+
+// ── SWIPE NAVIGATION ──────────────────────────────────────────
+(function() {
+  var startX = 0, startY = 0;
+
+  document.body.addEventListener('touchstart', function(e) {
+    startX = e.changedTouches[0].clientX;
+    startY = e.changedTouches[0].clientY;
+  }, { passive: true });
+
+  document.body.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+
+    // Only trigger if horizontal component dominates and exceeds 50px threshold
+    if (Math.abs(dx) < 50) return;
+    if (Math.abs(dy) >= Math.abs(dx)) return; // Vertical-dominant — this is a scroll
+
+    // Find current active tab
+    var activeBtn = document.querySelector('.tab-btn.active');
+    if (!activeBtn) return;
+    var currentTab = activeBtn.getAttribute('data-tab');
+    var idx = TAB_ORDER.indexOf(currentTab);
+    if (idx === -1) return;
+
+    var newIdx;
+    if (dx < 0) {
+      // Swipe left → next tab
+      newIdx = Math.min(idx + 1, TAB_ORDER.length - 1);
+    } else {
+      // Swipe right → prev tab
+      newIdx = Math.max(idx - 1, 0);
+    }
+
+    if (newIdx !== idx) {
+      switchTab(TAB_ORDER[newIdx], true); // fromSwipe = true dismisses hint
+    }
+  }, { passive: true });
+})();
+
+// ── INIT ──────────────────────────────────────────────────────
+(function() {
+  applyTheme('welcome');
+
+  // Mark Welcome as visited on first load
+  var visited = getVisitedTabs();
+  if (visited.indexOf('welcome') === -1) {
+    visited.push('welcome');
+    saveVisitedTabs(visited);
+  }
+  updateProgressUI('welcome', visited);
+
+  // Apply saved signoffs (and stage locking)
+  applySignoffs(loadSignoffs());
+
+  // Show swipe hint if first visit
+  initSwipeHint();
+})();
+</script>
+
+</body>
+</html>
