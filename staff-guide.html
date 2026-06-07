@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cascade Hideaway — Cleaner's Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════════
+   CASCADE HIDEAWAY — Staff Onboarding Guide
+   New light branding · Plus Jakarta Sans + Cormorant
+   Mobile-first · June 2026
+   ══════════════════════════════════════════════ */
+
+:root {
+  --gold:       #C9963A;
+  --gold-light: #E8B84B;
+  --gold-wash:  #FEF6E8;
+  --gold-tint:  #FDF0D5;
+  --gold-border:#F0D9A8;
+
+  --bg:         #FDFCF9;
+  --surface:    #FFFFFF;
+  --surface-2:  #F8F6F2;
+
+  --ink:        #1A1207;
+  --ink-2:      #4A3C2E;
+  --ink-3:      #7A6A5A;
+  --ink-4:      #A89880;
+
+  --green:      #16A34A;
+  --green-bg:   #F0FDF4;
+  --green-border:#BBF7D0;
+
+  --amber:      #D97706;
+  --amber-bg:   #FFFBEB;
+  --amber-border:#FDE68A;
+
+  --red:        #DC2626;
+  --red-bg:     #FEF2F2;
+  --red-border: #FECACA;
+
+  --blue:       #2563EB;
+  --blue-bg:    #EFF6FF;
+  --blue-border:#BFDBFE;
+
+  --border:     rgba(26,18,7,.08);
+  --border-md:  rgba(26,18,7,.12);
+
+  --shadow-sm:  0 1px 4px rgba(26,18,7,.06);
+  --shadow:     0 2px 12px rgba(26,18,7,.08);
+  --shadow-lg:  0 8px 32px rgba(26,18,7,.10);
+
+  --radius:     16px;
+  --radius-sm:  10px;
+  --radius-xs:  6px;
+
+  --max-w:      540px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes shimmer{
+  0%{background-position:-200% 0}
+  100%{background-position:200% 0}
+}
+.animate{animation:fadeUp 500ms ease-out both}
+@media(prefers-reduced-motion:reduce){.animate{animation:none}}
+
+/* ── HERO HEADER ── */
+.hero{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:0;
+  overflow:hidden;
+  position:relative;
+}
+.hero-band{
+  height:4px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));
+  background-size:200% 100%;
+  animation:shimmer 3s linear infinite;
+}
+.hero-inner{
+  padding:32px 20px 28px;
+  max-width:var(--max-w);
+  margin:0 auto;
+  position:relative;
+}
+.hero-logo{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:20px;
+}
+.hero-logo-mark{
+  width:40px;height:40px;
+  background:var(--gold);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+  flex-shrink:0;
+}
+.hero-logo-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.2;
+}
+.hero-logo-sub{
+  font-size:.65rem;
+  color:var(--ink-3);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:400;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--gold-wash);
+  border:1px solid var(--gold-border);
+  color:var(--gold);
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:20px;
+  margin-bottom:12px;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,6vw,2.6rem);
+  font-weight:700;
+  color:var(--ink);
+  line-height:1.1;
+  margin-bottom:8px;
+  letter-spacing:-.02em;
+}
+.hero-title em{
+  color:var(--gold);
+  font-style:italic;
+}
+.hero-desc{
+  font-size:.85rem;
+  color:var(--ink-2);
+  font-weight:400;
+  margin-bottom:20px;
+  max-width:380px;
+}
+.hero-welcome{
+  background:var(--gold-wash);
+  border:1px solid var(--gold-border);
+  border-radius:var(--radius-sm);
+  padding:14px 16px;
+  font-size:.82rem;
+  color:var(--ink-2);
+  line-height:1.6;
+}
+.hero-welcome strong{color:var(--ink);font-weight:700}
+
+/* ── STICKY PROGRESS BAR ── */
+.progress-nav{
+  position:sticky;top:0;z-index:100;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-sm);
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.progress-nav::-webkit-scrollbar{display:none}
+.progress-inner{
+  display:flex;
+  max-width:var(--max-w);
+  margin:0 auto;
+  min-width:max-content;
+}
+.prog-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 14px;
+  border:none;background:transparent;
+  cursor:pointer;
+  color:var(--ink-3);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.6rem;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:color 180ms,border-color 180ms;
+  flex-shrink:0;
+}
+.prog-btn .prog-icon{font-size:1.05rem}
+.prog-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.prog-btn:hover:not(.active){color:var(--ink-2)}
+
+/* ── WRAPPER ── */
+.wrap{
+  max-width:var(--max-w);
+  margin:0 auto;
+  padding:0 16px;
+}
+
+/* ── SECTION ── */
+.section{
+  padding:28px 0 0;
+  display:none;
+}
+.section.visible{display:block}
+
+/* ── SECTION HEADER ── */
+.sec-header{
+  padding:0 0 20px;
+}
+.sec-eyebrow{
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:5px;
+}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.7rem;
+  font-weight:700;
+  color:var(--ink);
+  line-height:1.15;
+  margin-bottom:5px;
+  letter-spacing:-.01em;
+}
+.sec-desc{
+  font-size:.8rem;
+  color:var(--ink-3);
+  font-weight:400;
+}
+
+/* ── PHASE CARD ── */
+.phase{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  margin-bottom:16px;
+}
+.phase-head{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 18px;
+  background:var(--ink);
+  color:#fff;
+}
+.phase-num{
+  width:32px;height:32px;
+  background:var(--gold);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;
+  font-weight:800;
+  color:var(--ink);
+  flex-shrink:0;
+}
+.phase-title{
+  font-size:.82rem;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.9);
+  flex:1;
+}
+.phase-timing{
+  font-size:.65rem;
+  color:rgba(255,255,255,.4);
+  font-weight:400;
+}
+.phase-body{border-top:none}
+
+/* ── STEP ── */
+.step{
+  display:flex;gap:14px;
+  padding:17px 18px;
+  border-bottom:1px solid var(--border);
+  transition:background 150ms;
+}
+.step:last-child{border-bottom:none}
+.step:hover{background:var(--surface-2)}
+.step-dot{
+  width:26px;height:26px;
+  border:2px solid var(--gold-border);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;
+  font-weight:800;
+  color:var(--gold);
+  flex-shrink:0;
+  margin-top:1px;
+  background:var(--gold-wash);
+}
+.step-body{flex:1;min-width:0}
+.step-title{
+  font-size:.9rem;
+  font-weight:700;
+  color:var(--ink);
+  margin-bottom:3px;
+}
+.step-text{
+  font-size:.8rem;
+  color:var(--ink-2);
+  line-height:1.6;
+}
+
+/* ── CALLOUT STYLES ── */
+.callout{
+  border-radius:var(--radius-sm);
+  padding:13px 15px;
+  margin:10px 0 0;
+  font-size:.78rem;
+  line-height:1.6;
+}
+.callout-title{
+  font-size:.65rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+.callout.gold{
+  background:var(--gold-wash);
+  border:1px solid var(--gold-border);
+}
+.callout.gold .callout-title{color:var(--gold)}
+.callout.gold p,.callout.gold li{color:var(--ink-2)}
+.callout.green{
+  background:var(--green-bg);
+  border:1px solid var(--green-border);
+}
+.callout.green .callout-title{color:var(--green)}
+.callout.green p,.callout.green li{color:#166534}
+.callout.amber{
+  background:var(--amber-bg);
+  border:1px solid var(--amber-border);
+}
+.callout.amber .callout-title{color:var(--amber)}
+.callout.amber p,.callout.amber li{color:#92400E}
+.callout.red{
+  background:var(--red-bg);
+  border:1px solid var(--red-border);
+}
+.callout.red .callout-title{color:var(--red)}
+.callout.red p,.callout.red li{color:#991B1B}
+.callout.blue{
+  background:var(--blue-bg);
+  border:1px solid var(--blue-border);
+}
+.callout.blue .callout-title{color:var(--blue)}
+.callout.blue p,.callout.blue li{color:#1E40AF}
+.callout ul{padding-left:16px}
+.callout li{margin-bottom:3px}
+
+/* ── PHOTO REQUIREMENT BADGE ── */
+.photo-req{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--ink);
+  color:#fff;
+  font-size:.65rem;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:20px;
+  margin:8px 0 4px;
+}
+.photo-req .photo-icon{font-size:.8rem}
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin:10px 0 0;
+}
+.photo-item{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-xs);
+  padding:10px 12px;
+  font-size:.75rem;
+  color:var(--ink-2);
+}
+.photo-item::before{
+  display:block;
+  font-size:1.2rem;
+  margin-bottom:4px;
+}
+.pi-bedroom::before{content:'🛏️'}
+.pi-living::before{content:'🛋️'}
+.pi-kitchen::before{content:'🍳'}
+.pi-bathroom::before{content:'🚿'}
+.pi-entrance::before{content:'🚪'}
+.pi-issues::before{content:'⚠️'}
+.pi-meter-e::before{content:'⚡'}
+.pi-meter-w::before{content:'💧'}
+
+/* ── ROOM STANDARD CARD ── */
+.room-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+  margin-bottom:10px;
+  box-shadow:var(--shadow-sm);
+}
+.room-card-head{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 15px;
+  background:var(--surface-2);
+  border-bottom:1px solid var(--border);
+}
+.room-icon{font-size:1.3rem}
+.room-name{
+  font-size:.85rem;
+  font-weight:700;
+  color:var(--ink);
+}
+.room-body{padding:12px 15px}
+.room-check{
+  display:flex;align-items:flex-start;gap:9px;
+  padding:5px 0;
+  border-bottom:1px solid var(--border);
+  font-size:.78rem;
+  color:var(--ink-2);
+}
+.room-check:last-child{border-bottom:none;padding-bottom:0}
+.room-check::before{
+  content:'✓';
+  color:var(--green);
+  font-weight:700;
+  font-size:.75rem;
+  flex-shrink:0;
+  margin-top:2px;
+}
+.room-check .critical-mark{
+  display:inline-block;
+  background:var(--red-bg);
+  color:var(--red);
+  font-size:.58rem;
+  font-weight:700;
+  padding:1px 5px;
+  border-radius:3px;
+  margin-left:4px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  vertical-align:middle;
+}
+
+/* ── METER READING VISUAL ── */
+.meter-demo{
+  background:var(--ink);
+  border-radius:var(--radius-sm);
+  padding:16px;
+  margin:10px 0 0;
+  color:#fff;
+  font-family:monospace;
+  text-align:center;
+}
+.meter-display{
+  font-size:2rem;
+  font-weight:700;
+  letter-spacing:.15em;
+  color:var(--gold-light);
+  margin:8px 0 4px;
+}
+.meter-label{
+  font-size:.65rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.4);
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.meter-note{
+  font-size:.72rem;
+  color:rgba(255,255,255,.55);
+  margin-top:8px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-style:italic;
+}
+
+/* ── INVENTORY CHECKLIST ── */
+.inv-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.inv-table th{
+  padding:8px 12px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--ink-3);
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  text-align:left;
+}
+.inv-table td{
+  padding:9px 12px;
+  border:1px solid var(--border);
+  color:var(--ink-2);
+  vertical-align:middle;
+}
+.inv-table tr:nth-child(even) td{background:var(--surface-2)}
+.inv-icon{font-size:1rem;margin-right:4px}
+.inv-min{
+  display:inline-block;
+  background:var(--gold-wash);
+  color:var(--gold);
+  border:1px solid var(--gold-border);
+  font-size:.6rem;
+  font-weight:700;
+  padding:1px 6px;
+  border-radius:4px;
+}
+.inv-low{
+  display:inline-block;
+  background:var(--red-bg);
+  color:var(--red);
+  font-size:.6rem;
+  font-weight:700;
+  padding:1px 6px;
+  border-radius:4px;
+}
+
+/* ── TELEGRAM MOCKUP ── */
+.tg-preview{
+  background:#1d2028;
+  border-radius:var(--radius-sm);
+  padding:14px;
+  margin:10px 0 0;
+}
+.tg-meta{
+  font-size:.62rem;
+  color:#4CAF50;
+  font-weight:700;
+  margin-bottom:6px;
+  letter-spacing:.03em;
+}
+.tg-badge-pill{
+  display:inline-block;
+  background:#2a3040;
+  color:#7a8a9a;
+  font-size:.58rem;
+  padding:1px 5px;
+  border-radius:3px;
+  margin-left:5px;
+}
+.tg-msg{
+  font-size:.76rem;
+  color:#d8d8d8;
+  line-height:1.65;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.tg-b{font-weight:700;color:#fff}
+.tg-g{color:#4CAF50}
+.tg-gold{color:#E8B84B}
+.tg-hr{border:none;border-top:1px solid #2e3640;margin:7px 0}
+.tg-btn{
+  display:inline-block;
+  margin-top:8px;
+  background:#2a3a50;
+  color:#4a9eff;
+  font-size:.72rem;
+  padding:6px 12px;
+  border-radius:5px;
+  font-weight:600;
+}
+
+/* ── WHAT HAPPENS BLOCK ── */
+.happens-list{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.happens-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+}
+.happens-item:last-child{border-bottom:none}
+.happens-num{
+  width:28px;height:28px;
+  background:var(--gold-wash);
+  border:1.5px solid var(--gold-border);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;
+  font-weight:800;
+  color:var(--gold);
+  flex-shrink:0;
+}
+.happens-text{flex:1;font-size:.8rem;color:var(--ink-2);line-height:1.55}
+.happens-text strong{color:var(--ink);font-weight:700}
+
+/* ── QUICK REF CARD ── */
+.qr-card{
+  background:var(--ink);
+  color:#fff;
+  border-radius:var(--radius);
+  padding:22px;
+  margin-bottom:16px;
+  box-shadow:var(--shadow-lg);
+}
+.qr-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--gold-light);
+  margin-bottom:14px;
+}
+.qr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qr-item{
+  background:rgba(255,255,255,.06);
+  border-radius:var(--radius-xs);
+  padding:10px 12px;
+}
+.qr-item-label{
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.35);
+  margin-bottom:3px;
+}
+.qr-item-value{
+  font-size:.82rem;
+  font-weight:700;
+  color:#fff;
+}
+.qr-item-value span{color:var(--gold-light)}
+
+/* ── LINK BUTTON ── */
+.link-btn{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:14px 16px;
+  text-decoration:none;
+  color:var(--ink);
+  box-shadow:var(--shadow-sm);
+  transition:all 180ms ease-out;
+  margin-bottom:10px;
+}
+.link-btn:hover{border-color:var(--gold);box-shadow:var(--shadow)}
+.link-btn-icon{font-size:1.4rem;flex-shrink:0}
+.link-btn-body{flex:1;min-width:0}
+.link-btn-label{font-size:.88rem;font-weight:700;color:var(--ink)}
+.link-btn-url{
+  font-size:.68rem;
+  color:var(--ink-4);
+  margin-top:1px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.link-btn-arrow{
+  color:var(--gold);
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+
+/* ── DIVIDER ── */
+.divider{
+  height:1px;
+  background:linear-gradient(to right,transparent,var(--border-md),transparent);
+  margin:24px 0;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);
+  color:rgba(255,255,255,.35);
+  text-align:center;
+  padding:24px 20px;
+  font-size:.7rem;
+  margin-top:40px;
+}
+footer strong{color:rgba(255,255,255,.7)}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  box-shadow:0 -4px 20px rgba(26,18,7,.08);
+  z-index:200;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.bnav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:10px 4px 8px;
+  border:none;background:transparent;
+  cursor:pointer;
+  color:var(--ink-4);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.55rem;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  transition:color 150ms;
+}
+.bnav-btn .bnav-icon{font-size:1.1rem;transition:transform 200ms}
+.bnav-btn.active{color:var(--gold)}
+.bnav-btn.active .bnav-icon{transform:scale(1.15)}
+.bnav-btn:hover:not(.active){color:var(--ink-2)}
+
+/* content padding for fixed footer */
+.page-pad{padding-bottom:80px}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-band"></div>
+  <div class="hero-inner animate">
+    <div class="hero-logo">
+      <div class="hero-logo-mark">🏡</div>
+      <div>
+        <div class="hero-logo-text">Cascade Hideaway</div>
+        <div class="hero-logo-sub">Bria Homes · General Santos City</div>
+      </div>
+    </div>
+    <div class="hero-tag">✦ Staff Guide</div>
+    <h1 class="hero-title">Your<br/><em>Cleaner's Handbook</em></h1>
+    <p class="hero-desc">Everything you need to do your job with confidence — step by step, in plain language.</p>
+    <div class="hero-welcome">
+      <strong>Welcome, Honey! 👋</strong><br/>
+      This guide covers exactly how to use the Cleaning App, what photos to take, how to read meters, and what a guest-ready unit looks like. Read it once carefully — then use it as a quick reference whenever you need it.
+    </div>
+  </div>
+</header>
+
+<!-- STICKY PROGRESS NAV -->
+<nav class="progress-nav" id="progNav">
+  <div class="progress-inner">
+    <button class="prog-btn active" onclick="goSection(0)" id="pb0">
+      <span class="prog-icon">📋</span>The App
+    </button>
+    <button class="prog-btn" onclick="goSection(1)" id="pb1">
+      <span class="prog-icon">📸</span>Photos
+    </button>
+    <button class="prog-btn" onclick="goSection(2)" id="pb2">
+      <span class="prog-icon">🧹</span>Cleaning
+    </button>
+    <button class="prog-btn" onclick="goSection(3)" id="pb3">
+      <span class="prog-icon">⚡</span>Meters
+    </button>
+    <button class="prog-btn" onclick="goSection(4)" id="pb4">
+      <span class="prog-icon">📦</span>Inventory
+    </button>
+  </div>
+</nav>
+
+<main class="page-pad">
+
+<!-- ═══════════════════════════════════════
+     SECTION 0 — THE APP
+═══════════════════════════════════════ -->
+<div class="section visible" id="s0">
+<div class="wrap">
+
+  <div class="sec-header" style="padding-top:24px">
+    <div class="sec-eyebrow">Getting Started</div>
+    <div class="sec-title">The Cleaning App</div>
+    <div class="sec-desc">How to open it, fill it in, and submit your report</div>
+  </div>
+
+  <!-- Why it matters -->
+  <div class="callout gold" style="margin-bottom:16px">
+    <div class="callout-title">What this app does</div>
+    <p>Every time you finish cleaning, you submit a report through this app. It automatically sends photos and meter readings to the admin — no WhatsApp messages, no separate photo albums needed. One submit = everything done.</p>
+  </div>
+
+  <!-- Opening the App -->
+  <div class="phase animate" style="--i:0">
+    <div class="phase-head">
+      <div class="phase-num">1</div>
+      <div class="phase-title">Opening & Setting Up</div>
+      <div class="phase-timing">2 min</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-body">
+          <div class="step-title">Open the app on your phone</div>
+          <div class="step-text">Open your browser (Chrome or any browser) and go to the Cleaning App link. The easiest way is to use the shortcut at the bottom of this guide.</div>
+          <div class="callout blue" style="margin-top:8px">
+            <div class="callout-title">💡 Save it to your home screen</div>
+            <p>In Chrome: tap the three-dot menu (⋮) → <strong>Add to Home Screen</strong>. It will appear as an app icon — no need to open the browser each time.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-body">
+          <div class="step-title">Select your name</div>
+          <div class="step-text">Tap the <strong>Cleaner Name</strong> field and select <strong>Honey Leyson</strong> from the list.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-body">
+          <div class="step-title">Set the cleaning date</div>
+          <div class="step-text">The app usually pre-fills today's date. Confirm it is correct. If you are cleaning a day after the checkout, make sure the date matches the actual cleaning day.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">4</div>
+        <div class="step-body">
+          <div class="step-title">Fill in the guest details</div>
+          <div class="step-text">The app may auto-fill the last guest's name and checkout date from the booking system. Confirm these are correct. If they're wrong, just type in the right information.</div>
+          <div class="callout gold">
+            <div class="callout-title">What to fill in</div>
+            <ul>
+              <li><strong>Last Guest Name</strong> — the guest who just checked out</li>
+              <li><strong>Nights Stayed</strong> — how many nights they stayed</li>
+              <li><strong>Check-out Date</strong> — the date they left</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">5</div>
+        <div class="step-body">
+          <div class="step-title">Select the cleaning type</div>
+          <div class="step-text">Choose the type that matches this cleaning:</div>
+          <div class="callout gold">
+            <p><strong>🔄 Turnover</strong> — standard cleaning after a guest checks out<br/>
+            <strong>🧽 Deep Clean</strong> — thorough deep clean (admin will tell you when needed)<br/>
+            <strong>🚨 Emergency</strong> — urgent cleaning for damage or special situation</p>
+          </div>
+          <div class="step-text" style="margin-top:8px">When in doubt, choose <strong>Turnover</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submitting -->
+  <div class="phase animate" style="--i:1">
+    <div class="phase-head">
+      <div class="phase-num">2</div>
+      <div class="phase-title">Submitting Your Report</div>
+      <div class="phase-timing">2 min</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-body">
+          <div class="step-title">Review before you tap Submit</div>
+          <div class="step-text">When you're ready, scroll to the bottom and tap <strong>Submit Report</strong>. A confirmation screen appears showing your photo count and checklist completion. Review it — if something looks wrong, go back and fix it.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-body">
+          <div class="step-title">Confirm and wait for the green screen</div>
+          <div class="step-text">Tap <strong>Confirm &amp; Submit</strong>. Keep the app open and wait. You will see a spinning indicator. After a few seconds:</div>
+          <div class="callout green" style="margin-top:8px">
+            <div class="callout-title">✅ Success</div>
+            <p>A green screen with a checkmark means your report was received. You are done. The admin has everything they need.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-body">
+          <div class="step-title">If you see a red error message</div>
+          <div class="step-text">This usually means your internet signal was lost during submit. <strong>Do NOT close the app.</strong> The app has saved your work. Wait for your signal to return — the app will retry automatically. Or tap <strong>Retry</strong> when you have signal.</div>
+          <div class="callout amber" style="margin-top:6px">
+            <div class="callout-title">⚠️ Do not submit twice</div>
+            <p>If you submitted and are unsure if it went through, check Telegram OPS. If the cleaning card is there — it worked. Do not tap Submit again.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What happens next -->
+  <div style="margin-top:4px;margin-bottom:20px">
+    <div style="font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px">What happens after you submit</div>
+    <div class="happens-list animate" style="--i:2">
+      <div class="happens-item">
+        <div class="happens-num">1</div>
+        <div class="happens-text"><strong>OPS Telegram</strong> — A cleaning card appears in the group chat immediately. Admin and everyone in the group can see your report, meter readings, and meter photos.</div>
+      </div>
+      <div class="happens-item">
+        <div class="happens-num">2</div>
+        <div class="happens-text"><strong>Email &amp; Drive</strong> — A full photo report with all your photos — organized by room — is sent to admin's email and saved to Google Drive. No extra steps from you.</div>
+      </div>
+      <div class="happens-item">
+        <div class="happens-num">3</div>
+        <div class="happens-text"><strong>Payment card</strong> — When admin prepares your payment, a card appears in the OPS Telegram group. Tap <strong>✅ Received Payment</strong> when you receive it.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPS Telegram preview -->
+  <div style="font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px">How your report looks in Telegram</div>
+  <div class="tg-preview animate" style="--i:3">
+    <div class="tg-meta">Cascade Hideaway <span class="tg-badge-pill">Admin</span></div>
+    <div class="tg-msg">
+      <span class="tg-b">🧹 Cleaning Report Submitted</span><br/>
+      📍 Cascade Bria  •  🔄 TURNOVER<br/>
+      <div class="tg-hr"></div>
+      👤 Cleaner: <span class="tg-b">Honey</span><br/>
+      📅 Date: 2026-06-08  •  09:15<br/>
+      👥 Last Guest: Maria Santos<br/>
+      🌙 Nights: 3<br/>
+      <div class="tg-hr"></div>
+      ⚡ Electric: 2790 kWh <span class="tg-gold">(Δ+14.2 kWh)</span><br/>
+      💧 Water: 55.1 m³ <span class="tg-gold">(Δ+0.32 m³)</span><br/>
+      <div class="tg-hr"></div>
+      <span class="tg-g">✅ 100%</span> Completion: 100%<br/>
+      📸 Full photo set emailed + archived to Drive.
+    </div>
+  </div>
+
+</div>
+</div><!-- /section 0 -->
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 1 — PHOTOS
+═══════════════════════════════════════ -->
+<div class="section" id="s1">
+<div class="wrap">
+
+  <div class="sec-header" style="padding-top:24px">
+    <div class="sec-eyebrow">Evidence &amp; Standards</div>
+    <div class="sec-title">Taking Photos</div>
+    <div class="sec-desc">What to photograph, when, and how many</div>
+  </div>
+
+  <div class="callout gold" style="margin-bottom:16px">
+    <div class="callout-title">Why photos matter</div>
+    <p>Photos protect everyone. Pre-clean photos prove the condition when you arrived. After-clean photos prove you left the unit in perfect condition. If a guest ever claims damage that was already there — your pre-clean photos are the evidence.</p>
+  </div>
+
+  <!-- Pre-Clean Photos -->
+  <div class="phase animate" style="--i:0">
+    <div class="phase-head">
+      <div class="phase-num">A</div>
+      <div class="phase-title">Pre-Clean Photos — Before You Start Cleaning</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">📸</div>
+        <div class="step-body">
+          <div class="step-title">Take these BEFORE touching anything</div>
+          <div class="step-text">As soon as you enter the unit and before you start cleaning, take photos of the current condition. Minimum 5 photos required.</div>
+          <div class="photo-req"><span class="photo-icon">📸</span> MINIMUM 5 PHOTOS</div>
+          <div class="photo-grid">
+            <div class="photo-item pi-bedroom">Full bedroom view</div>
+            <div class="photo-item pi-living">Living area / sofa</div>
+            <div class="photo-item pi-kitchen">Kitchen &amp; sink area</div>
+            <div class="photo-item pi-bathroom">Full bathroom view</div>
+            <div class="photo-item pi-entrance">Entrance / door area</div>
+            <div class="photo-item pi-issues">Any damage you see</div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">📱</div>
+        <div class="step-body">
+          <div class="step-title">How to add photos in the app</div>
+          <div class="step-text">In the app, scroll to the <strong>Pre-Clean Photos</strong> section. Tap the camera icon to take a photo or upload from gallery. Wait for the upload badge to turn <strong style="color:var(--green)">green</strong> before taking the next one.</div>
+          <div class="callout amber">
+            <div class="callout-title">⚠️ Wait for upload before moving on</div>
+            <p>Each photo shows a small badge while uploading. Green = saved. Yellow = still uploading. Do not close the app while photos are yellow.</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">⚠️</div>
+        <div class="step-body">
+          <div class="step-title">If you see damage — photograph it and flag it</div>
+          <div class="step-text">If something is broken, stained, missing, or damaged, take a clear close-up photo. In the checklist, find that item and tap the <strong>flag icon</strong> to report it. Write a short description.</div>
+          <div class="callout red">
+            <div class="callout-title">Important</div>
+            <p>Never clean or move damaged items before photographing them. The photo must show the condition exactly as you found it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- After-Clean Photos -->
+  <div class="phase animate" style="--i:1">
+    <div class="phase-head">
+      <div class="phase-num">B</div>
+      <div class="phase-title">After-Clean Photos — When You're Finished</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">📸</div>
+        <div class="step-body">
+          <div class="step-title">Take these AFTER the unit is completely ready</div>
+          <div class="step-text">Only take these photos when everything is done — bed made, surfaces clean, everything in place. Show the unit as the next guest will see it. Minimum 5 photos required.</div>
+          <div class="photo-req"><span class="photo-icon">📸</span> MINIMUM 5 PHOTOS</div>
+          <div class="photo-grid">
+            <div class="photo-item pi-bedroom">Bed made — pillows straight</div>
+            <div class="photo-item pi-living">Sofa arranged, surfaces clear</div>
+            <div class="photo-item pi-kitchen">Clean sink, wiped counters</div>
+            <div class="photo-item pi-bathroom">Clean bowl, folded towels</div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">✅</div>
+        <div class="step-body">
+          <div class="step-title">Same angles as the pre-clean photos</div>
+          <div class="step-text">Take the after photos from roughly the same position and direction as your pre-clean photos. This makes it easy to compare before and after.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meter Photos -->
+  <div class="phase animate" style="--i:2">
+    <div class="phase-head">
+      <div class="phase-num">C</div>
+      <div class="phase-title">Meter Photos — Every Single Session</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">⚡</div>
+        <div class="step-body">
+          <div class="step-title">Electric meter — 2 photos</div>
+          <div class="step-text">Go to the electric meter (outside the unit near the utility area). Take:</div>
+          <div class="photo-req"><span class="photo-icon">📸</span> 2 PHOTOS REQUIRED</div>
+          <div class="callout gold">
+            <p>
+              📷 <strong>Photo 1</strong> — Close-up of the meter display showing the number clearly<br/>
+              📷 <strong>Photo 2</strong> — Wider shot showing the full meter with the label and serial number
+            </p>
+          </div>
+          <div class="meter-demo">
+            <div class="meter-label">Electric Meter Reading</div>
+            <div class="meter-display">2 7 7 6 . 0</div>
+            <div class="meter-note">Type exactly what you see — including the decimal</div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">💧</div>
+        <div class="step-body">
+          <div class="step-title">Water meter — 1 photo minimum</div>
+          <div class="step-text">Same approach for the water meter. Take a clear close-up showing the reading numbers. Type the number into the Water Reading field in the app.</div>
+          <div class="callout red">
+            <div class="callout-title">Never skip meter photos</div>
+            <p>The admin uses these numbers every session to track utility usage and calculate bills. Missing meter photos will flag your session as incomplete.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo quality tips -->
+  <div class="callout green animate" style="--i:3;margin-bottom:24px">
+    <div class="callout-title">📱 Tips for good photos</div>
+    <ul>
+      <li>Take photos in good light — open the curtains first</li>
+      <li>For meters: hold your phone steady and close enough to see the numbers</li>
+      <li>Make sure the photo is in focus — tap the screen on the subject before shooting</li>
+      <li>Don't worry about perfectly framed "professional" shots — clear and complete is what matters</li>
+    </ul>
+  </div>
+
+</div>
+</div><!-- /section 1 -->
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 2 — CLEANING
+═══════════════════════════════════════ -->
+<div class="section" id="s2">
+<div class="wrap">
+
+  <div class="sec-header" style="padding-top:24px">
+    <div class="sec-eyebrow">Room by Room</div>
+    <div class="sec-title">Cleaning Standards</div>
+    <div class="sec-desc">What "guest-ready" looks like in every area</div>
+  </div>
+
+  <div class="callout gold" style="margin-bottom:16px">
+    <div class="callout-title">Our standard</div>
+    <p>Every guest should feel they are the first person to ever stay in this unit. "Hotel Comfort. Home Warmth." — not just clean, but welcoming.</p>
+  </div>
+
+  <!-- ORDER OF WORK -->
+  <div class="phase animate" style="--i:0">
+    <div class="phase-head">
+      <div class="phase-num">1</div>
+      <div class="phase-title">Order of Work</div>
+      <div class="phase-timing">~60 min total</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">A</div>
+        <div class="step-body">
+          <div class="step-title">Arrive &amp; Assess <span style="color:var(--ink-3);font-weight:400;font-size:.78rem">5 min</span></div>
+          <div class="step-text">Open windows and ventilate. Take pre-clean photos. Check for damage. Remove all guest items and leftover food. Strip the bed — sheets, pillowcases, duvet cover.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">B</div>
+        <div class="step-body">
+          <div class="step-title">Bedroom &amp; Living Area <span style="color:var(--ink-3);font-weight:400;font-size:.78rem">20 min</span></div>
+          <div class="step-text">Clean from top to bottom — dust first, surfaces second, floor last. Make the bed with fresh linen. Arrange furniture properly.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">C</div>
+        <div class="step-body">
+          <div class="step-title">Kitchen &amp; Bathroom <span style="color:var(--ink-3);font-weight:400;font-size:.78rem">20 min</span></div>
+          <div class="step-text">These need the most attention — guests judge a unit by bathroom cleanliness. Scrub thoroughly. Disinfect all high-touch surfaces.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">D</div>
+        <div class="step-body">
+          <div class="step-title">Final Checks &amp; Power <span style="color:var(--ink-3);font-weight:400;font-size:.78rem">10 min</span></div>
+          <div class="step-text">Check all lights work. Set AC to standby. Replace toiletries and supplies. Take after-clean photos and meter readings. Submit report.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROOM STANDARDS -->
+  <div style="font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:20px 0 10px">Room-by-room checklist</div>
+
+  <div class="room-card animate" style="--i:1">
+    <div class="room-card-head">
+      <span class="room-icon">🛏️</span>
+      <span class="room-name">Bedroom &amp; Living Area</span>
+    </div>
+    <div class="room-body">
+      <div class="room-check">Bed made with fresh linen — sheets tucked, pillows straight and plumped <span class="critical-mark">critical</span></div>
+      <div class="room-check">Duvet / blanket folded neatly at foot of bed or in wardrobe</div>
+      <div class="room-check">Pillowcases replaced — no hair, no stains</div>
+      <div class="room-check">All surfaces dusted — bedside table, TV console, shelves, windowsills</div>
+      <div class="room-check">Floor vacuumed or swept and mopped</div>
+      <div class="room-check">Wardrobe — extra hangers in place, no guest items left behind</div>
+      <div class="room-check">Curtains / blinds adjusted properly (guest preference: closed at handover)</div>
+      <div class="room-check">AC set to standby / off — remote placed on bedside table</div>
+      <div class="room-check">Sofa cushions arranged neatly</div>
+      <div class="room-check">TV remote placed on table, working batteries confirmed</div>
+      <div class="room-check">Trash emptied and new bag inserted</div>
+    </div>
+  </div>
+
+  <div class="room-card animate" style="--i:2">
+    <div class="room-card-head">
+      <span class="room-icon">🚿</span>
+      <span class="room-name">Bathroom</span>
+    </div>
+    <div class="room-body">
+      <div class="room-check">Toilet bowl scrubbed inside, rim and seat wiped <span class="critical-mark">critical</span></div>
+      <div class="room-check">Toilet flushed and bowl clear — no streaks or stains</div>
+      <div class="room-check">Shower / basin scrubbed — no soap scum, no hair</div>
+      <div class="room-check">Tap and fixtures wiped dry and shining</div>
+      <div class="room-check">Mirror cleaned — no spots or smears</div>
+      <div class="room-check">Floor mopped and dry</div>
+      <div class="room-check">Fresh towels folded and placed <span class="critical-mark">critical</span></div>
+      <div class="room-check">Shampoo, conditioner, body wash replenished</div>
+      <div class="room-check">Toilet paper roll replaced (minimum 2 rolls available)</div>
+      <div class="room-check">Trash emptied and new bag inserted</div>
+    </div>
+  </div>
+
+  <div class="room-card animate" style="--i:3">
+    <div class="room-card-head">
+      <span class="room-icon">🍳</span>
+      <span class="room-name">Kitchen</span>
+    </div>
+    <div class="room-body">
+      <div class="room-check">All dishes washed, dried, and returned to cupboard</div>
+      <div class="room-check">Sink scrubbed and dry</div>
+      <div class="room-check">Countertops wiped down with disinfectant</div>
+      <div class="room-check">Cooktop / stove wiped — no grease or food residue</div>
+      <div class="room-check">Microwave wiped inside and outside</div>
+      <div class="room-check">Refrigerator — all guest food removed, wipe spills</div>
+      <div class="room-check">Kettle emptied, wiped outside</div>
+      <div class="room-check">Coffee sachets and tea bags replenished</div>
+      <div class="room-check">Floor swept and mopped</div>
+      <div class="room-check">Trash emptied and new bag inserted</div>
+    </div>
+  </div>
+
+  <!-- FLAGGING ISSUES -->
+  <div class="phase animate" style="--i:4" style="margin-top:20px">
+    <div class="phase-head">
+      <div class="phase-num">!</div>
+      <div class="phase-title">Flagging Issues</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">⚠️</div>
+        <div class="step-body">
+          <div class="step-title">When to flag an issue</div>
+          <div class="step-text">Flag any item that is broken, not working, damaged, missing, or needs admin attention.</div>
+          <div class="callout gold">
+            <div class="callout-title">Common items to flag</div>
+            <ul>
+              <li>Broken shower head, dripping tap, running toilet</li>
+              <li>Light bulb burnt out (especially bathroom)</li>
+              <li>AC not cooling, remote not working</li>
+              <li>Damage to furniture, walls, bedding, or appliances</li>
+              <li>Stain that won't come out after normal cleaning</li>
+              <li>Missing item (remote control, kitchen utensil, etc.)</li>
+              <li>Smell that won't go away after ventilating</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">📱</div>
+        <div class="step-body">
+          <div class="step-title">How to flag in the app</div>
+          <div class="step-text">Find the checklist item that has the issue. Tap the <strong>🚩 flag icon</strong> next to it. Write a short note (one sentence is enough). You can also attach a photo of the issue.</div>
+          <div class="callout green">
+            <div class="callout-title">✅ After you flag it</div>
+            <p>You don't need to call or text anyone. The flag goes directly to the admin through the app. They will see it immediately when you submit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /section 2 -->
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 3 — METERS
+═══════════════════════════════════════ -->
+<div class="section" id="s3">
+<div class="wrap">
+
+  <div class="sec-header" style="padding-top:24px">
+    <div class="sec-eyebrow">Utility Tracking</div>
+    <div class="sec-title">Meter Readings</div>
+    <div class="sec-desc">Reading meters correctly, every single session</div>
+  </div>
+
+  <div class="callout red" style="margin-bottom:16px">
+    <div class="callout-title">Never skip this step</div>
+    <p>Meter readings are recorded every session without exception. They track electricity and water usage, which affects billing and helps detect problems like leaks or forgotten ACs.</p>
+  </div>
+
+  <!-- ELECTRIC METER -->
+  <div class="phase animate" style="--i:0">
+    <div class="phase-head">
+      <div class="phase-num">⚡</div>
+      <div class="phase-title">Electric Meter</div>
+      <div class="phase-timing">2 min</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-body">
+          <div class="step-title">Go to the electric meter outside the unit</div>
+          <div class="step-text">The electric meter is located in the utility area outside. It is a grey box with a digital or dial display showing kilowatt-hours (kWh).</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-body">
+          <div class="step-title">Take two photos</div>
+          <div class="step-text">Photo 1: Close-up of the display — numbers must be clearly readable. Photo 2: Wider shot showing the full meter face.</div>
+          <div class="meter-demo">
+            <div class="meter-label">What to photograph</div>
+            <div class="meter-display">0 0 2 7 7 6</div>
+            <div class="meter-note">The digits shown here — type these exactly into the Electric Reading field</div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-body">
+          <div class="step-title">Type the reading into the app</div>
+          <div class="step-text">In the app, find the <strong>Electric Meter Reading</strong> field. Type the exact number shown on the meter — including any decimal digits. Do not round.</div>
+          <div class="callout amber">
+            <div class="callout-title">Read the number left to right</div>
+            <p>If the meter shows <strong>02776.0</strong>, type <strong>2776.0</strong> — include the decimal. If there are leading zeros, you may ignore them (so 02776 = 2776).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WATER METER -->
+  <div class="phase animate" style="--i:1">
+    <div class="phase-head">
+      <div class="phase-num">💧</div>
+      <div class="phase-title">Water Meter</div>
+      <div class="phase-timing">2 min</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-body">
+          <div class="step-title">Find the water meter</div>
+          <div class="step-text">The water meter is usually near the water line at the base of the unit or in a small covered pit near the front. It shows cubic meters (m³).</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-body">
+          <div class="step-title">Take one clear photo and type the reading</div>
+          <div class="step-text">Take a close-up showing the numbers clearly. Type the reading into the <strong>Water Meter Reading</strong> field. Include all decimal digits shown.</div>
+          <div class="callout green">
+            <div class="callout-title">✅ Example</div>
+            <p>If the water meter shows <strong>54.789</strong>, type <strong>54.789</strong> exactly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMON MISTAKES -->
+  <div class="phase animate" style="--i:2">
+    <div class="phase-head">
+      <div class="phase-num">!</div>
+      <div class="phase-title">Common Mistakes to Avoid</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">✗</div>
+        <div class="step-body">
+          <div class="step-title">Don't round the number</div>
+          <div class="step-text">If the meter shows <strong>2776.4</strong>, type <strong>2776.4</strong> — not <strong>2776</strong>. The decimals matter for calculating the exact usage.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">✗</div>
+        <div class="step-body">
+          <div class="step-title">Don't skip if signal is weak</div>
+          <div class="step-text">Take the meter photos and enter the numbers even if your signal is poor. The app saves everything — it will upload when you're back on signal.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">✗</div>
+        <div class="step-body">
+          <div class="step-title">Don't guess or estimate</div>
+          <div class="step-text">If you cannot read the meter clearly (dirty cover, faded display), take a photo of what you can see and add a note: "Meter display unclear — please check." The admin will handle it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout blue animate" style="--i:3;margin-bottom:24px">
+    <div class="callout-title">ℹ️ What admin does with meter readings</div>
+    <p>The system automatically calculates how much electricity and water was used during the last guest's stay, and the average per night. If usage is unusually high (2× normal), admin gets an alert to investigate. Your accurate readings make this work.</p>
+  </div>
+
+</div>
+</div><!-- /section 3 -->
+
+
+<!-- ═══════════════════════════════════════
+     SECTION 4 — INVENTORY
+═══════════════════════════════════════ -->
+<div class="section" id="s4">
+<div class="wrap">
+
+  <div class="sec-header" style="padding-top:24px">
+    <div class="sec-eyebrow">Stock Awareness</div>
+    <div class="sec-title">Inventory Checks</div>
+    <div class="sec-desc">What to check and how to report low stock</div>
+  </div>
+
+  <div class="callout gold" style="margin-bottom:16px">
+    <div class="callout-title">Your role in inventory</div>
+    <p>You are the only person who sees the unit regularly. When supplies run low, you are the first to know. Reporting low stock during your cleaning prevents guests from arriving to find no toilet paper or coffee. You don't need to buy anything yourself — just report it.</p>
+  </div>
+
+  <!-- What to check -->
+  <div class="phase animate" style="--i:0">
+    <div class="phase-head">
+      <div class="phase-num">1</div>
+      <div class="phase-title">Check These Every Session</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">📋</div>
+        <div class="step-body">
+          <div class="step-title">Check all consumable supplies while cleaning</div>
+          <div class="step-text">As you work through each room, check how much of each supply is left. The table below shows the minimum levels that should always be in the unit for guests.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="inv-table animate" style="--i:1;margin-bottom:16px">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Location</th>
+        <th>Min. Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="inv-icon">🧻</span>Toilet paper</td><td>Bathroom cabinet</td><td><span class="inv-min">2 rolls</span></td></tr>
+      <tr><td><span class="inv-icon">🧴</span>Shampoo sachets</td><td>Bathroom shelf</td><td><span class="inv-min">2 pcs</span></td></tr>
+      <tr><td><span class="inv-icon">🧴</span>Conditioner sachets</td><td>Bathroom shelf</td><td><span class="inv-min">2 pcs</span></td></tr>
+      <tr><td><span class="inv-icon">🧴</span>Body wash sachets</td><td>Bathroom shelf</td><td><span class="inv-min">2 pcs</span></td></tr>
+      <tr><td><span class="inv-icon">🧼</span>Bar soap</td><td>Bathroom sink</td><td><span class="inv-min">1 bar</span></td></tr>
+      <tr><td><span class="inv-icon">☕</span>Coffee sachets</td><td>Kitchen counter</td><td><span class="inv-min">3 pcs</span></td></tr>
+      <tr><td><span class="inv-icon">🍵</span>Tea bags</td><td>Kitchen counter</td><td><span class="inv-min">3 pcs</span></td></tr>
+      <tr><td><span class="inv-icon">🫙</span>Sugar &amp; creamer</td><td>Kitchen counter</td><td><span class="inv-min">3 pcs</span></td></tr>
+      <tr><td><span class="inv-icon">🧹</span>Garbage bags</td><td>Under kitchen sink</td><td><span class="inv-min">3 bags</span></td></tr>
+      <tr><td><span class="inv-icon">🧽</span>Dish sponge</td><td>Kitchen sink</td><td><span class="inv-min">1 pc</span></td></tr>
+      <tr><td><span class="inv-icon">🧴</span>Dish soap</td><td>Kitchen sink</td><td><span class="inv-min">½ bottle</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- How to report -->
+  <div class="phase animate" style="--i:2">
+    <div class="phase-head">
+      <div class="phase-num">2</div>
+      <div class="phase-title">How to Report Low Stock</div>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-body">
+          <div class="step-title">Add a note in the cleaning app</div>
+          <div class="step-text">In the app, scroll to the <strong>General Notes</strong> or <strong>Urgent Notes</strong> section at the bottom. Type which items are low.</div>
+          <div class="callout gold">
+            <div class="callout-title">Example note</div>
+            <p>"Low stock: toilet paper (1 roll left), coffee sachets (2 left), no more body wash."</p>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-body">
+          <div class="step-title">If something is completely empty — add it as an urgent flag</div>
+          <div class="step-text">If there is zero of something that a guest needs (no toilet paper, no soap) — flag it as urgent so admin sees it before the next check-in.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-body">
+          <div class="step-title">If you see something completely missing or broken</div>
+          <div class="step-text">For example: TV remote is gone, AC remote is broken, a kitchen utensil is missing. Flag this as an issue in the checklist section for that room.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Ref Card -->
+  <div class="qr-card animate" style="--i:3">
+    <div class="qr-title">Quick Reference Card</div>
+    <div class="qr-grid">
+      <div class="qr-item">
+        <div class="qr-item-label">Pre-Clean Photos</div>
+        <div class="qr-item-value"><span>MIN 5</span> photos</div>
+      </div>
+      <div class="qr-item">
+        <div class="qr-item-label">After-Clean Photos</div>
+        <div class="qr-item-value"><span>MIN 5</span> photos</div>
+      </div>
+      <div class="qr-item">
+        <div class="qr-item-label">Meter Photos</div>
+        <div class="qr-item-value">Electric <span>2</span> + Water <span>1</span></div>
+      </div>
+      <div class="qr-item">
+        <div class="qr-item-label">Checklist Completion</div>
+        <div class="qr-item-value"><span>100%</span> target</div>
+      </div>
+      <div class="qr-item">
+        <div class="qr-item-label">Toilet Paper Min</div>
+        <div class="qr-item-value"><span>2 rolls</span> on hand</div>
+      </div>
+      <div class="qr-item">
+        <div class="qr-item-label">After Submit</div>
+        <div class="qr-item-value">Wait for <span>green ✅</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <div class="divider"></div>
+  <div style="font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px">Your Tools</div>
+
+  <a class="link-btn animate" style="--i:4" href="https://cascadereservations-del.github.io/CH-Cleaners-Checklist/" target="_blank" rel="noopener">
+    <div class="link-btn-icon">✅</div>
+    <div class="link-btn-body">
+      <div class="link-btn-label">Cleaning Checklist App</div>
+      <div class="link-btn-url">cascadereservations-del.github.io/CH-Cleaners-Checklist</div>
+    </div>
+    <div class="link-btn-arrow">↗</div>
+  </a>
+
+  <div class="callout amber animate" style="--i:5;margin-bottom:28px">
+    <div class="callout-title">📞 Need help or found an emergency?</div>
+    <p>If you find a serious problem (flooding, no electricity, security issue), send a message directly to admin:<br/>
+    <strong>📧 cascadereservations@gmail.com</strong><br/>
+    Or message in the Cascade Hideaway OPS Telegram group.</p>
+  </div>
+
+</div>
+</div><!-- /section 4 -->
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn active" onclick="goSection(0)" id="bnav0">
+    <span class="bnav-icon">📋</span>App
+  </button>
+  <button class="bnav-btn" onclick="goSection(1)" id="bnav1">
+    <span class="bnav-icon">📸</span>Photos
+  </button>
+  <button class="bnav-btn" onclick="goSection(2)" id="bnav2">
+    <span class="bnav-icon">🧹</span>Clean
+  </button>
+  <button class="bnav-btn" onclick="goSection(3)" id="bnav3">
+    <span class="bnav-icon">⚡</span>Meters
+  </button>
+  <button class="bnav-btn" onclick="goSection(4)" id="bnav4">
+    <span class="bnav-icon">📦</span>Stock
+  </button>
+</nav>
+
+<footer>
+  <strong>Cascade Hideaway</strong> · Block 47 Lot 39, Bria Homes, General Santos City<br/>
+  Questions? Message admin: cascadereservations@gmail.com<br/>
+  <span style="opacity:.5">Staff Guide v1.0 · June 2026 · For: Honey Leyson</span>
+</footer>
+
+<script>
+const SECTIONS = ['s0','s1','s2','s3','s4'];
+let current = 0;
+
+function goSection(idx) {
+  // Hide old
+  document.getElementById(SECTIONS[current]).classList.remove('visible');
+  document.getElementById('pb' + current).classList.remove('active');
+  document.getElementById('bnav' + current).classList.remove('active');
+  // Show new
+  current = idx;
+  const sec = document.getElementById(SECTIONS[current]);
+  sec.classList.add('visible');
+  document.getElementById('pb' + current).classList.add('active');
+  document.getElementById('bnav' + current).classList.add('active');
+  // Scroll top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Re-trigger animations
+  sec.querySelectorAll('.animate').forEach((el, i) => {
+    el.style.animation = 'none';
+    void el.offsetWidth; // reflow
+    el.style.animation = '';
+    el.style.animationDelay = (i * 80) + 'ms';
+  });
+  // Scroll progress nav to show active button
+  const btn = document.getElementById('pb' + idx);
+  btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+// Touch swipe
+let _tx = 0;
+document.addEventListener('touchstart', e => { _tx = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - _tx;
+  if (Math.abs(dx) < 55) return;
+  if (dx < 0 && current < SECTIONS.length - 1) goSection(current + 1);
+  if (dx > 0 && current > 0) goSection(current - 1);
+}, { passive: true });
+</script>
+</body>
+</html>
